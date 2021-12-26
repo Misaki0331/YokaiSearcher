@@ -17,10 +17,12 @@ namespace WindowsFormsApp1
         bool isCompleted;
         int ProgressInt;
         int ResultCount;
+        string SearchingMode;
         List<string> PasswordList= new List<string>();
         public Form1()
         {
             InitializeComponent();
+            SearchingModeBox.Text = "単語検索";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -33,7 +35,7 @@ namespace WindowsFormsApp1
                 Application.DoEvents();
             }
             Refreshing.Enabled = true;
-            this.Text = "Yokai Searcher (水咲製作) Version.1.00";
+            this.Text = "Yokai Searcher (水咲製作)" + Properties.Resources.VersionText;
         }
 
 
@@ -56,24 +58,49 @@ namespace WindowsFormsApp1
             ResultCount = 0;
             for (int i = 0; i < Passwords.Length; i++)
             {
-                if (Passwords[i].Contains(SearchWord))
+                switch (SearchingMode)
                 {
-                    PasswordList.Add(Passwords[i]);
-                    ResultCount++;
+                    case "単語検索":
+                        if (Passwords[i].Contains(SearchWord))
+                        {
+
+                            PasswordList.Add(Passwords[i]);
+                            ResultCount++;
+                        }
+                        break;
+                    case "先頭検索":
+                        if (Passwords[i].StartsWith(SearchWord)){
+                            PasswordList.Add(Passwords[i]);
+                            ResultCount++;
+                        }
+                        break;
+                    case "終端検索":
+                        if (Passwords[i].EndsWith(SearchWord))
+                        {
+                            PasswordList.Add(Passwords[i]);
+                            ResultCount++;
+                        }
+                        break;
                 }
                 ProgressInt++;
+
             }
             isCompleted = true;
         }
         private void SearchButton_Click(object sender, EventArgs e)
         {
+            SearchEnter();
+        }
+        void SearchEnter()
+        {
             isCompleted = false;
             SearchButton.Enabled = false;
             SearchWord = SearchTextBox.Text;
+            SearchingMode = SearchingModeBox.Text;
+
             //Searching();
             MTSearch.RunWorkerAsync();
         }
-
         private void MTSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchButton.Enabled = true;
@@ -92,6 +119,14 @@ namespace WindowsFormsApp1
             catch
             {
 
+            }
+        }
+
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                SearchEnter();
             }
         }
     }
