@@ -19,12 +19,10 @@ namespace WindowsFormsApp1
         int ProgressInt;
         int ResultCount;
         string SearchingMode;
-        bool IsSearchingALL;
         List<string> PasswordList= new List<string>();
         public Form1()
         {
             InitializeComponent();
-            IsSearchingALL = true;
             SearchingModeBox.Text = "単語検索";
         }
 
@@ -70,7 +68,6 @@ namespace WindowsFormsApp1
                 PasswordList.Clear();
                 ProgressInt = 0;
                 ResultCount = 0;
-                IsSearchingALL = false;
 
                 for (int i = 0; i < Passwords_temp.Length; i++)
                 {
@@ -111,10 +108,6 @@ namespace WindowsFormsApp1
         }
         void SearchEnter()
         {
-            if (!SearchContinueCheckBox.Checked)
-            {
-                IsSearchingALL = true;
-            }
             isCompleted = false;
 
             ErrorText.Text = $"";
@@ -175,7 +168,8 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            IsSearchingALL = true;
+
+            Passwords_temp = Passwords;
         }
 
     }
