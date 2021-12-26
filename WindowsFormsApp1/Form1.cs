@@ -33,7 +33,7 @@ namespace WindowsFormsApp1
                 Application.DoEvents();
             }
             Refreshing.Enabled = true;
-            this.Text = "Done";
+            this.Text = "Yokai Searcher (水咲製作) Version.1.00";
         }
 
 

@@ -38,6 +38,7 @@ namespace WindowsFormsApp1
             this.PasswordResultBox = new System.Windows.Forms.TextBox();
             this.Refreshing = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -100,16 +101,27 @@ namespace WindowsFormsApp1
             this.label1.TabIndex = 5;
             this.label1.Text = "label1";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(247, 73);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(244, 24);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "即席で作ったのでバグが発生するかもです。\r\nその際はタスクマネージャーから消してやってください。\r\n";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.PasswordResultBox);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.SearchButton);
             this.Controls.Add(this.SearchTextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -128,6 +140,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.TextBox PasswordResultBox;
         private System.Windows.Forms.Timer Refreshing;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
