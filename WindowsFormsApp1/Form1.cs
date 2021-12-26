@@ -108,8 +108,16 @@ namespace WindowsFormsApp1
         }
         void SearchEnter()
         {
+            if (SearchTextBox.Text.Length > 14)
+            {
+                ErrorText.Text = $"14文字を超えています。";
+            }
+            if (!checkTextBox(SearchTextBox.Text))
+            {
+                ErrorText.Text = $"無効な文字が含まれています。";
+                return;
+            }
             isCompleted = false;
-
             ErrorText.Text = $"";
             SearchButton.Enabled = false;
             SearchWord = SearchTextBox.Text;
@@ -120,9 +128,10 @@ namespace WindowsFormsApp1
         {
             SearchButton.Enabled = true;
             isCompleted = true;
-            
             Passwords_temp = PasswordList.ToArray();
-            PasswordResultBox.Lines = PasswordList.ToArray();
+            StringComparer cmp = StringComparer.Ordinal;
+            Array.Sort(Passwords_temp, cmp);
+            PasswordResultBox.Lines = Passwords_temp;
             if (SearchContinueCheckBox.Checked)
             {
                 if (ResultCount == 0)
@@ -172,5 +181,36 @@ namespace WindowsFormsApp1
             Passwords_temp = Passwords;
         }
 
+
+        private bool checkTextBox(string str)
+        {
+            string contain = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!-.nmc";
+            int count = 0;
+            if (str.Length > 14)
+            {
+                return false;
+            }
+            for(int i = 0; i < str.Length; i++)
+            {
+                for(int j = 0; j <= 42; j++)
+                {
+                    if (j==42)
+                    {
+                        return false;
+                    }else
+                    if (str[i] == contain[j])
+                    {
+                        Console.WriteLine($"{i}:{str[i]}={j}");
+                        count++;
+                        break;
+                    }
+                }
+            }
+            if (str.Length == count)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
