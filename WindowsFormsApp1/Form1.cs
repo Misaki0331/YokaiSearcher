@@ -15,13 +15,16 @@ namespace WindowsFormsApp1
     {
         string[] Passwords;
         string[] Passwords_temp;
+        string[] Passwords_temp2;
         string SearchWord;
         bool isCompleted;
         int ProgressInt;
         int ResultCount;
         string SearchingMode;
         string ThreadErrorText;
+        const int maxList = 10000;
         List<string> PasswordList= new List<string>();
+        List<string> PasswordList2= new List<string>();
         public Form1()
         {
             InitializeComponent();
@@ -72,6 +75,7 @@ namespace WindowsFormsApp1
             try
             {
                 PasswordList.Clear();
+                PasswordList2.Clear();
                 ProgressInt = 0;
                 ResultCount = 0;
                 Regex rx = null;
@@ -86,20 +90,23 @@ namespace WindowsFormsApp1
                             {
 
                                 PasswordList.Add(Passwords_temp[i]);
+                                if(ResultCount<maxList)PasswordList2.Add(Passwords_temp[i]);
                                 ResultCount++;
                             }
                             break;
                         case "先頭検索":
                             if (Passwords_temp[i].StartsWith(SearchWord))
                             {
-                                PasswordList.Add(Passwords_temp[i]);
+                                 PasswordList.Add(Passwords_temp[i]);
+                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
                                 ResultCount++;
                             }
                             break;
                         case "終端検索":
                             if (Passwords_temp[i].EndsWith(SearchWord))
                             {
-                                PasswordList.Add(Passwords_temp[i]);
+                                 PasswordList.Add(Passwords_temp[i]);
+                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
                                 ResultCount++;
                             }
                             break;
@@ -107,14 +114,17 @@ namespace WindowsFormsApp1
                             if (rx.IsMatch(Passwords_temp[i]))
                             {
                                 PasswordList.Add(Passwords_temp[i]);
+                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
                                 ResultCount++;
                             }
                             break;
                     }
                     ProgressInt++;
 
+
                 }
                 isCompleted = true;
+                if (ResultCount > maxList) throw new IndexOutOfRangeException($"{maxList} 個を超えています。一部は省略しました。");
                 ThreadErrorText = "OK";
             }
             catch(Exception ex)
@@ -159,9 +169,10 @@ namespace WindowsFormsApp1
                 ThreadErrorText = string.Empty;
             }
             Passwords_temp = PasswordList.ToArray();
+            Passwords_temp2 = PasswordList2.ToArray();
             StringComparer cmp = StringComparer.Ordinal;
-            Array.Sort(Passwords_temp, cmp);
-            PasswordResultBox.Lines = Passwords_temp;
+            Array.Sort(Passwords_temp2, cmp);
+            PasswordResultBox.Lines = Passwords_temp2;
             if (SearchContinueCheckBox.Checked)
             {
                 if (ResultCount == 0)
@@ -184,6 +195,7 @@ namespace WindowsFormsApp1
 
         private void Refresh_Tick(object sender, EventArgs e)
         {
+
             try
             {
                 
