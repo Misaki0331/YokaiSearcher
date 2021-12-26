@@ -40,11 +40,14 @@ namespace WindowsFormsApp1
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchingModeBox = new System.Windows.Forms.ComboBox();
+            this.SearchClearButton = new System.Windows.Forms.Button();
+            this.ErrorText = new System.Windows.Forms.Label();
+            this.SearchContinueCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SearchTextBox
             // 
-            this.SearchTextBox.Location = new System.Drawing.Point(326, 42);
+            this.SearchTextBox.Location = new System.Drawing.Point(325, 51);
             this.SearchTextBox.MaxLength = 14;
             this.SearchTextBox.Name = "SearchTextBox";
             this.SearchTextBox.Size = new System.Drawing.Size(100, 19);
@@ -53,7 +56,7 @@ namespace WindowsFormsApp1
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(432, 41);
+            this.SearchButton.Location = new System.Drawing.Point(431, 50);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(49, 19);
             this.SearchButton.TabIndex = 2;
@@ -107,7 +110,7 @@ namespace WindowsFormsApp1
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(247, 299);
+            this.label2.Location = new System.Drawing.Point(236, 182);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(244, 24);
             this.label2.TabIndex = 6;
@@ -121,16 +124,49 @@ namespace WindowsFormsApp1
             "単語検索",
             "先頭検索",
             "終端検索"});
-            this.SearchingModeBox.Location = new System.Drawing.Point(230, 41);
+            this.SearchingModeBox.Location = new System.Drawing.Point(229, 50);
             this.SearchingModeBox.Name = "SearchingModeBox";
             this.SearchingModeBox.Size = new System.Drawing.Size(90, 20);
             this.SearchingModeBox.TabIndex = 7;
+            // 
+            // SearchClearButton
+            // 
+            this.SearchClearButton.Location = new System.Drawing.Point(486, 51);
+            this.SearchClearButton.Name = "SearchClearButton";
+            this.SearchClearButton.Size = new System.Drawing.Size(75, 18);
+            this.SearchClearButton.TabIndex = 8;
+            this.SearchClearButton.Text = "検索クリア";
+            this.SearchClearButton.UseVisualStyleBackColor = true;
+            this.SearchClearButton.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // ErrorText
+            // 
+            this.ErrorText.AutoSize = true;
+            this.ErrorText.ForeColor = System.Drawing.Color.Red;
+            this.ErrorText.Location = new System.Drawing.Point(247, 85);
+            this.ErrorText.Name = "ErrorText";
+            this.ErrorText.Size = new System.Drawing.Size(137, 12);
+            this.ErrorText.TabIndex = 9;
+            this.ErrorText.Text = "ここにエラーが表示されます。";
+            // 
+            // SearchContinueCheckBox
+            // 
+            this.SearchContinueCheckBox.AutoSize = true;
+            this.SearchContinueCheckBox.Location = new System.Drawing.Point(229, 31);
+            this.SearchContinueCheckBox.Name = "SearchContinueCheckBox";
+            this.SearchContinueCheckBox.Size = new System.Drawing.Size(98, 16);
+            this.SearchContinueCheckBox.TabIndex = 10;
+            this.SearchContinueCheckBox.Text = "続けて検索する";
+            this.SearchContinueCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SearchContinueCheckBox);
+            this.Controls.Add(this.ErrorText);
+            this.Controls.Add(this.SearchClearButton);
             this.Controls.Add(this.SearchingModeBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -160,6 +196,9 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox SearchingModeBox;
+        private System.Windows.Forms.Button SearchClearButton;
+        private System.Windows.Forms.Label ErrorText;
+        private System.Windows.Forms.CheckBox SearchContinueCheckBox;
     }
 }
 
