@@ -104,7 +104,7 @@ namespace WindowsFormsApp1.Properties {
         }
         
         /// <summary>
-        ///   Ver.1.04 に類似しているローカライズされた文字列を検索します。
+        ///   Ver.1.05 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string VersionText {
             get {

@@ -25,7 +25,9 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            Show();
             SearchingModeBox.Text = "単語検索";
+            Application.DoEvents();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -178,21 +180,23 @@ namespace WindowsFormsApp1
                     ErrorText.Text = $"見つかりませんでした。";
                 }
             }
-            
         }
 
         private void Refresh_Tick(object sender, EventArgs e)
         {
             try
             {
-
+                
+                progressBar1.Maximum = Passwords_temp.Length;
                 progressBar1.Value = ProgressInt;
-                label1.Text = $"Found : {ResultCount}";
             }
             catch
             {
 
             }
+            label1.Text = $"見つかった数 : {ResultCount}件";
+            label3.Text = $"{((double)ProgressInt / Passwords_temp.Length*100.00).ToString("F2")}%";
+            
         }
 
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)

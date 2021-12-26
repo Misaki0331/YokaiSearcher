@@ -43,6 +43,7 @@ namespace WindowsFormsApp1
             this.SearchClearButton = new System.Windows.Forms.Button();
             this.ErrorText = new System.Windows.Forms.Label();
             this.SearchContinueCheckBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -160,11 +161,21 @@ namespace WindowsFormsApp1
             this.SearchContinueCheckBox.Text = "続けて検索する";
             this.SearchContinueCheckBox.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(700, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(100, 18);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "label3";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.SearchContinueCheckBox);
             this.Controls.Add(this.ErrorText);
             this.Controls.Add(this.SearchClearButton);
@@ -200,6 +211,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Button SearchClearButton;
         private System.Windows.Forms.Label ErrorText;
         private System.Windows.Forms.CheckBox SearchContinueCheckBox;
+        private System.Windows.Forms.Label label3;
     }
 }
 
