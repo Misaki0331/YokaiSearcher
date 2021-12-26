@@ -48,15 +48,15 @@ namespace WindowsFormsApp1
             // SearchTextBox
             // 
             this.SearchTextBox.Location = new System.Drawing.Point(325, 51);
-            this.SearchTextBox.MaxLength = 14;
+            this.SearchTextBox.MaxLength = 100;
             this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(100, 19);
+            this.SearchTextBox.Size = new System.Drawing.Size(177, 19);
             this.SearchTextBox.TabIndex = 0;
             this.SearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyDown);
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(431, 50);
+            this.SearchButton.Location = new System.Drawing.Point(508, 50);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(49, 19);
             this.SearchButton.TabIndex = 2;
@@ -123,7 +123,8 @@ namespace WindowsFormsApp1
             this.SearchingModeBox.Items.AddRange(new object[] {
             "単語検索",
             "先頭検索",
-            "終端検索"});
+            "終端検索",
+            "正規表現"});
             this.SearchingModeBox.Location = new System.Drawing.Point(229, 50);
             this.SearchingModeBox.Name = "SearchingModeBox";
             this.SearchingModeBox.Size = new System.Drawing.Size(90, 20);
@@ -131,9 +132,9 @@ namespace WindowsFormsApp1
             // 
             // SearchClearButton
             // 
-            this.SearchClearButton.Location = new System.Drawing.Point(486, 51);
+            this.SearchClearButton.Location = new System.Drawing.Point(563, 50);
             this.SearchClearButton.Name = "SearchClearButton";
-            this.SearchClearButton.Size = new System.Drawing.Size(75, 18);
+            this.SearchClearButton.Size = new System.Drawing.Size(75, 20);
             this.SearchClearButton.TabIndex = 8;
             this.SearchClearButton.Text = "検索クリア";
             this.SearchClearButton.UseVisualStyleBackColor = true;

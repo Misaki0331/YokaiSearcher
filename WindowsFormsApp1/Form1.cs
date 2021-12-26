@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -19,6 +20,7 @@ namespace WindowsFormsApp1
         int ProgressInt;
         int ResultCount;
         string SearchingMode;
+        string ThreadErrorText;
         List<string> PasswordList= new List<string>();
         public Form1()
         {
@@ -38,7 +40,7 @@ namespace WindowsFormsApp1
                 Application.DoEvents();
             }
             Refreshing.Enabled = true;
-            this.Text = "Yokai Searcher (水咲製作)" + Properties.Resources.VersionText;
+            this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
            
         }
 
@@ -65,9 +67,13 @@ namespace WindowsFormsApp1
 
         void Searching()
         {
+            try
+            {
                 PasswordList.Clear();
                 ProgressInt = 0;
                 ResultCount = 0;
+                Regex rx = null;
+                if (SearchingMode == "正規表現") rx = new Regex(SearchWord, RegexOptions.Compiled);
 
                 for (int i = 0; i < Passwords_temp.Length; i++)
                 {
@@ -95,11 +101,24 @@ namespace WindowsFormsApp1
                                 ResultCount++;
                             }
                             break;
+                        case "正規表現":
+                            if (rx.IsMatch(Passwords_temp[i]))
+                            {
+                                PasswordList.Add(Passwords_temp[i]);
+                                ResultCount++;
+                            }
+                            break;
                     }
                     ProgressInt++;
 
                 }
                 isCompleted = true;
+                ThreadErrorText = "OK";
+            }
+            catch(Exception ex)
+            {
+                ThreadErrorText = ex.Message;
+            }
             
         }
         private void SearchButton_Click(object sender, EventArgs e)
@@ -111,11 +130,15 @@ namespace WindowsFormsApp1
             if (SearchTextBox.Text.Length > 14)
             {
                 ErrorText.Text = $"14文字を超えています。";
+                return;            
             }
-            if (!checkTextBox(SearchTextBox.Text))
+            if (SearchingModeBox.Text != "正規表現")
             {
-                ErrorText.Text = $"無効な文字が含まれています。";
-                return;
+                if (!checkTextBox(SearchTextBox.Text))
+                {
+                    ErrorText.Text = $"無効な文字が含まれています。";
+                    return;
+                }
             }
             isCompleted = false;
             ErrorText.Text = $"";
@@ -128,6 +151,11 @@ namespace WindowsFormsApp1
         {
             SearchButton.Enabled = true;
             isCompleted = true;
+            if (ThreadErrorText != "OK")
+            {
+                ErrorText.Text = ThreadErrorText;
+                ThreadErrorText = string.Empty;
+            }
             Passwords_temp = PasswordList.ToArray();
             StringComparer cmp = StringComparer.Ordinal;
             Array.Sort(Passwords_temp, cmp);
