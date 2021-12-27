@@ -89,6 +89,7 @@ namespace YokaiSearcher
 
                 for (int i = 0; i < Passwords_temp.Length; i++)
                 {
+                    if (Passwords_temp[i].Length < 14) continue;
                     switch (SearchingMode)
                     {
                         case "単語検索":
