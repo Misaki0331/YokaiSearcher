@@ -26,6 +26,7 @@ namespace YokaiSearcher
         bool IsNotSearch;
         string SearchLog="";
         bool IsFirstSearch;
+        bool IsContinueSearch;
         const int maxList = 10000;
         List<string> PasswordList= new List<string>();
         List<string> PasswordList2= new List<string>();
@@ -174,6 +175,12 @@ namespace YokaiSearcher
                     return;
                 }
             }
+            IsContinueSearch = SearchContinueCheckBox.Checked;
+            if (!IsContinueSearch)
+            {
+                Passwords_temp = Passwords;
+                IsFirstSearch = true;
+            }
             IsLemitter = TextLimiterCheckBox.Checked;
             IsNotSearch = SearchNotCheckBox.Checked;
             progressBar1.Value = 0;
@@ -231,7 +238,7 @@ namespace YokaiSearcher
             LogAdd();
 
             IsFirstSearch = false;
-            if (SearchContinueCheckBox.Checked)
+            if (IsContinueSearch)
             {
                 if (ResultCount == 0)
                 {
@@ -243,11 +250,10 @@ namespace YokaiSearcher
             }
             else
             {
-
-                Passwords_temp = Passwords;
-                IsFirstSearch = true;
                 if (ResultCount == 0)
                 {
+
+                    Passwords_temp = Passwords;
                     ErrorText.Text = $"見つかりませんでした。";
                 }
             }
@@ -255,7 +261,8 @@ namespace YokaiSearcher
 
         private void Refresh_Tick(object sender, EventArgs e)
         {
-
+            double percent = ((double)ProgressInt / Passwords_temp.Length * 100.00);
+            if (percent > 100) percent = 100;
             try
             {
                 
@@ -266,7 +273,7 @@ namespace YokaiSearcher
 
             }
             label1.Text = $"見つかった数 : {ResultCount}件";
-            label3.Text = $"{((double)ProgressInt / Passwords_temp.Length*100.00).ToString("F2")}%";
+            ProgressLabel.Text = $"{percent.ToString("F2")}%";
             
         }
 
@@ -347,6 +354,18 @@ namespace YokaiSearcher
 
             SearchLog = "";
             SearchLogTextBox.Lines = SearchLog.Split('\n');
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+
+            Console.WriteLine($"{Size.Width},{Size.Height}");
+            progressBar1.Size = new Size(this.Size.Width - 6, progressBar1.Size.Height);
+            ProgressLabel.Location = new Point(this.Size.Width - 106, ProgressLabel.Location.Y);
+            SearchLogTextBox.Location = new Point(this.Size.Width - 288, this.Size.Height - 200);
+            LogClearButton.Location = new Point(this.Size.Width - 93, this.Size.Height - 229);
+            LogLabel.Location = new Point(this.Size.Width - 290, this.Size.Height - 215);
+            PasswordResultBox.Size = new Size(PasswordResultBox.Size.Width, this.Height - 76);
         }
     }
 }

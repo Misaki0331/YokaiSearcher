@@ -38,16 +38,15 @@ namespace YokaiSearcher
             this.PasswordResultBox = new System.Windows.Forms.TextBox();
             this.Refreshing = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.SearchingModeBox = new System.Windows.Forms.ComboBox();
             this.SearchClearButton = new System.Windows.Forms.Button();
             this.ErrorText = new System.Windows.Forms.Label();
             this.SearchContinueCheckBox = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.ProgressLabel = new System.Windows.Forms.Label();
             this.TextLimiterCheckBox = new System.Windows.Forms.CheckBox();
             this.SearchNotCheckBox = new System.Windows.Forms.CheckBox();
             this.SearchLogTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.LogLabel = new System.Windows.Forms.Label();
             this.LogClearButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -113,15 +112,6 @@ namespace YokaiSearcher
             this.label1.TabIndex = 5;
             this.label1.Text = "ここに見つかった数が表示されます。";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(227, 143);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(244, 24);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "即席で作ったのでバグが発生するかもです。\r\nその際はタスクマネージャーから消してやってください。\r\n";
-            // 
             // SearchingModeBox
             // 
             this.SearchingModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -166,14 +156,14 @@ namespace YokaiSearcher
             this.SearchContinueCheckBox.Text = "続けて検索する";
             this.SearchContinueCheckBox.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // ProgressLabel
             // 
-            this.label3.Location = new System.Drawing.Point(700, 29);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 18);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "label3";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.ProgressLabel.Location = new System.Drawing.Point(700, 29);
+            this.ProgressLabel.Name = "ProgressLabel";
+            this.ProgressLabel.Size = new System.Drawing.Size(100, 18);
+            this.ProgressLabel.TabIndex = 11;
+            this.ProgressLabel.Text = "label3";
+            this.ProgressLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TextLimiterCheckBox
             // 
@@ -208,14 +198,14 @@ namespace YokaiSearcher
             this.SearchLogTextBox.Size = new System.Drawing.Size(270, 163);
             this.SearchLogTextBox.TabIndex = 14;
             // 
-            // label4
+            // LogLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(516, 260);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 12);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "検索ログ";
+            this.LogLabel.AutoSize = true;
+            this.LogLabel.Location = new System.Drawing.Point(516, 260);
+            this.LogLabel.Name = "LogLabel";
+            this.LogLabel.Size = new System.Drawing.Size(47, 12);
+            this.LogLabel.TabIndex = 15;
+            this.LogLabel.Text = "検索ログ";
             // 
             // LogClearButton
             // 
@@ -233,26 +223,25 @@ namespace YokaiSearcher
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.LogClearButton);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.LogLabel);
             this.Controls.Add(this.SearchLogTextBox);
             this.Controls.Add(this.SearchNotCheckBox);
             this.Controls.Add(this.TextLimiterCheckBox);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.ProgressLabel);
             this.Controls.Add(this.SearchContinueCheckBox);
             this.Controls.Add(this.ErrorText);
             this.Controls.Add(this.SearchClearButton);
             this.Controls.Add(this.SearchingModeBox);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.PasswordResultBox);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.SearchButton);
             this.Controls.Add(this.SearchTextBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(655, 320);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,16 +257,15 @@ namespace YokaiSearcher
         private System.Windows.Forms.TextBox PasswordResultBox;
         private System.Windows.Forms.Timer Refreshing;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox SearchingModeBox;
         private System.Windows.Forms.Button SearchClearButton;
         private System.Windows.Forms.Label ErrorText;
         private System.Windows.Forms.CheckBox SearchContinueCheckBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label ProgressLabel;
         private System.Windows.Forms.CheckBox TextLimiterCheckBox;
         private System.Windows.Forms.CheckBox SearchNotCheckBox;
         private System.Windows.Forms.TextBox SearchLogTextBox;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label LogLabel;
         private System.Windows.Forms.Button LogClearButton;
     }
 }
