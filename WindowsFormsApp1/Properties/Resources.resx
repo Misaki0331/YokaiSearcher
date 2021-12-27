@@ -122,6 +122,6 @@
     <value>..\Resources\passwords.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>
   <data name="VersionText" xml:space="preserve">
-    <value>Ver.1.07</value>
+    <value>Ver.1.08</value>
   </data>
 </root>

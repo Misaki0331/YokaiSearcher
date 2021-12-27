@@ -46,6 +46,9 @@ namespace YokaiSearcher
             this.label3 = new System.Windows.Forms.Label();
             this.TextLimiterCheckBox = new System.Windows.Forms.CheckBox();
             this.SearchNotCheckBox = new System.Windows.Forms.CheckBox();
+            this.SearchLogTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.LogClearButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -113,7 +116,7 @@ namespace YokaiSearcher
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(236, 182);
+            this.label2.Location = new System.Drawing.Point(227, 143);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(244, 24);
             this.label2.TabIndex = 6;
@@ -194,11 +197,44 @@ namespace YokaiSearcher
             this.SearchNotCheckBox.Text = "NOT検索";
             this.SearchNotCheckBox.UseVisualStyleBackColor = true;
             // 
+            // SearchLogTextBox
+            // 
+            this.SearchLogTextBox.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.SearchLogTextBox.Location = new System.Drawing.Point(518, 275);
+            this.SearchLogTextBox.Multiline = true;
+            this.SearchLogTextBox.Name = "SearchLogTextBox";
+            this.SearchLogTextBox.ReadOnly = true;
+            this.SearchLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.SearchLogTextBox.Size = new System.Drawing.Size(270, 163);
+            this.SearchLogTextBox.TabIndex = 14;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(516, 260);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 12);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "検索ログ";
+            // 
+            // LogClearButton
+            // 
+            this.LogClearButton.Location = new System.Drawing.Point(713, 246);
+            this.LogClearButton.Name = "LogClearButton";
+            this.LogClearButton.Size = new System.Drawing.Size(75, 23);
+            this.LogClearButton.TabIndex = 16;
+            this.LogClearButton.Text = "ログ消去";
+            this.LogClearButton.UseVisualStyleBackColor = true;
+            this.LogClearButton.Click += new System.EventHandler(this.LogClearButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.LogClearButton);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.SearchLogTextBox);
             this.Controls.Add(this.SearchNotCheckBox);
             this.Controls.Add(this.TextLimiterCheckBox);
             this.Controls.Add(this.label3);
@@ -240,6 +276,9 @@ namespace YokaiSearcher
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox TextLimiterCheckBox;
         private System.Windows.Forms.CheckBox SearchNotCheckBox;
+        private System.Windows.Forms.TextBox SearchLogTextBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button LogClearButton;
     }
 }
 

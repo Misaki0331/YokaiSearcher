@@ -24,6 +24,8 @@ namespace YokaiSearcher
         string SearchingMode;
         string ThreadErrorText;
         bool IsNotSearch;
+        string SearchLog="";
+        bool IsFirstSearch;
         const int maxList = 10000;
         List<string> PasswordList= new List<string>();
         List<string> PasswordList2= new List<string>();
@@ -32,6 +34,7 @@ namespace YokaiSearcher
             InitializeComponent();
             Show();
             SearchingModeBox.Text = "単語検索";
+            IsFirstSearch = true;
             Application.DoEvents();
         }
 
@@ -173,7 +176,6 @@ namespace YokaiSearcher
             }
             IsLemitter = TextLimiterCheckBox.Checked;
             IsNotSearch = SearchNotCheckBox.Checked;
-
             progressBar1.Value = 0;
             progressBar1.Maximum = Passwords_temp.Length;
             isCompleted = false;
@@ -184,11 +186,38 @@ namespace YokaiSearcher
             SearchingMode = SearchingModeBox.Text;
             MTSearch.RunWorkerAsync();
         }
+        void LogAdd()
+        {
+            string tmp;
+            if (IsFirstSearch)
+            {
+                tmp = $"＋";
+            }
+            else
+            {
+                tmp = $"↓";
+            }
+            tmp += $"{ ResultCount.ToString().PadLeft(8, ' ')}件 ";
+            if (IsNotSearch)
+            {
+                tmp += "－";
+            }
+            else
+            {
+                tmp += "＆";
+            }
+            tmp += $"{SearchingMode} {SearchWord}";
+            SearchLog += tmp + "\n";
+            SearchLogTextBox.Lines = SearchLog.Split('\n');
+            SearchLogTextBox.SelectionStart = SearchLogTextBox.Text.Length;
+            SearchLogTextBox.ScrollToCaret();
+        }
         private void MTSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchButton.Enabled = true;
             TextLimiterCheckBox.Enabled = true;
             isCompleted = true;
+            
             if (ThreadErrorText != "OK")
             {
                 ErrorText.Text = ThreadErrorText;
@@ -199,21 +228,26 @@ namespace YokaiSearcher
             StringComparer cmp = StringComparer.Ordinal;
             Array.Sort(Passwords_temp2, cmp);
             PasswordResultBox.Lines = Passwords_temp2;
+            LogAdd();
+
+            IsFirstSearch = false;
             if (SearchContinueCheckBox.Checked)
             {
                 if (ResultCount == 0)
                 {
                     Passwords_temp = Passwords;
                     ErrorText.Text = $"見つからない為検索リストをリセットします。";
+
+                    IsFirstSearch = true ;
                 }
             }
             else
             {
 
                 Passwords_temp = Passwords;
+                IsFirstSearch = true;
                 if (ResultCount == 0)
                 {
-
                     ErrorText.Text = $"見つかりませんでした。";
                 }
             }
@@ -248,6 +282,7 @@ namespace YokaiSearcher
         {
 
             Passwords_temp = Passwords;
+            IsFirstSearch = true;
         }
 
 
@@ -305,6 +340,13 @@ namespace YokaiSearcher
                 TextLimiterCheckBox.Text = "表示上限を無視する";
 
             }
+        }
+
+        private void LogClearButton_Click(object sender, EventArgs e)
+        {
+
+            SearchLog = "";
+            SearchLogTextBox.Lines = SearchLog.Split('\n');
         }
     }
 }
