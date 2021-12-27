@@ -162,13 +162,14 @@ namespace YokaiSearcher
         }
         void SearchEnter()
         {
-            if (SearchTextBox.Text.Length > 14)
-            {
-                ErrorText.Text = $"14文字を超えています。";
-                return;            
-            }
+            
             if (SearchingModeBox.Text != "正規表現")
             {
+                if (SearchTextBox.Text.Length > 14)
+                {
+                    ErrorText.Text = $"14文字を超えています。";
+                    return;
+                }
                 if (!checkTextBox(SearchTextBox.Text))
                 {
                     ErrorText.Text = $"無効な文字が含まれています。";
