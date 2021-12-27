@@ -1,5 +1,5 @@
 ﻿
-namespace WindowsFormsApp1
+namespace YokaiSearcher
 {
     partial class Form1
     {
@@ -44,6 +44,8 @@ namespace WindowsFormsApp1
             this.ErrorText = new System.Windows.Forms.Label();
             this.SearchContinueCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.TextLimiterCheckBox = new System.Windows.Forms.CheckBox();
+            this.SearchNotCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -170,11 +172,35 @@ namespace WindowsFormsApp1
             this.label3.Text = "label3";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // TextLimiterCheckBox
+            // 
+            this.TextLimiterCheckBox.AutoSize = true;
+            this.TextLimiterCheckBox.ForeColor = System.Drawing.Color.Red;
+            this.TextLimiterCheckBox.Location = new System.Drawing.Point(463, 31);
+            this.TextLimiterCheckBox.Name = "TextLimiterCheckBox";
+            this.TextLimiterCheckBox.Size = new System.Drawing.Size(124, 16);
+            this.TextLimiterCheckBox.TabIndex = 12;
+            this.TextLimiterCheckBox.Text = "表示上限を無視する";
+            this.TextLimiterCheckBox.UseVisualStyleBackColor = true;
+            this.TextLimiterCheckBox.CheckedChanged += new System.EventHandler(this.TextLimiterCheckBox_CheckedChanged);
+            // 
+            // SearchNotCheckBox
+            // 
+            this.SearchNotCheckBox.AutoSize = true;
+            this.SearchNotCheckBox.Location = new System.Drawing.Point(325, 31);
+            this.SearchNotCheckBox.Name = "SearchNotCheckBox";
+            this.SearchNotCheckBox.Size = new System.Drawing.Size(71, 16);
+            this.SearchNotCheckBox.TabIndex = 13;
+            this.SearchNotCheckBox.Text = "NOT検索";
+            this.SearchNotCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SearchNotCheckBox);
+            this.Controls.Add(this.TextLimiterCheckBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.SearchContinueCheckBox);
             this.Controls.Add(this.ErrorText);
@@ -212,6 +238,8 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Label ErrorText;
         private System.Windows.Forms.CheckBox SearchContinueCheckBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox TextLimiterCheckBox;
+        private System.Windows.Forms.CheckBox SearchNotCheckBox;
     }
 }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace YokaiSearcher
 {
     public partial class Form1 : Form
     {
@@ -18,10 +18,12 @@ namespace WindowsFormsApp1
         string[] Passwords_temp2;
         string SearchWord;
         bool isCompleted;
+        bool IsLemitter;
         int ProgressInt;
         int ResultCount;
         string SearchingMode;
         string ThreadErrorText;
+        bool IsNotSearch;
         const int maxList = 10000;
         List<string> PasswordList= new List<string>();
         List<string> PasswordList2= new List<string>();
@@ -89,33 +91,44 @@ namespace WindowsFormsApp1
                             if (Passwords_temp[i].Contains(SearchWord))
                             {
 
-                                PasswordList.Add(Passwords_temp[i]);
-                                if(ResultCount<maxList)PasswordList2.Add(Passwords_temp[i]);
-                                ResultCount++;
+                                if(!IsNotSearch)AddCollection(i);
+                            }
+                            else
+                            {
+                                if (IsNotSearch) AddCollection(i);
                             }
                             break;
                         case "先頭検索":
                             if (Passwords_temp[i].StartsWith(SearchWord))
                             {
-                                 PasswordList.Add(Passwords_temp[i]);
-                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
-                                ResultCount++;
+
+                                if (!IsNotSearch) AddCollection(i);
+                            }
+                            else
+                            {
+                                if (IsNotSearch) AddCollection(i);
                             }
                             break;
                         case "終端検索":
                             if (Passwords_temp[i].EndsWith(SearchWord))
                             {
-                                 PasswordList.Add(Passwords_temp[i]);
-                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
-                                ResultCount++;
+
+                                if (!IsNotSearch) AddCollection(i);
+                            }
+                            else
+                            {
+                                if (IsNotSearch) AddCollection(i);
                             }
                             break;
                         case "正規表現":
                             if (rx.IsMatch(Passwords_temp[i]))
                             {
-                                PasswordList.Add(Passwords_temp[i]);
-                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
-                                ResultCount++;
+
+                                if (!IsNotSearch) AddCollection(i);
+                            }
+                            else
+                            {
+                                if (IsNotSearch) AddCollection(i);
                             }
                             break;
                     }
@@ -124,7 +137,7 @@ namespace WindowsFormsApp1
 
                 }
                 isCompleted = true;
-                if (ResultCount > maxList) throw new IndexOutOfRangeException($"{maxList} 個を超えています。一部は省略しました。");
+                if (ResultCount > maxList&&!IsLemitter) throw new IndexOutOfRangeException($"{maxList} 個を超えています。一部は省略しました。");
                 ThreadErrorText = "OK";
             }
             catch(Exception ex)
@@ -132,6 +145,12 @@ namespace WindowsFormsApp1
                 ThreadErrorText = ex.Message;
             }
             
+        }
+        void AddCollection(int i)
+        {
+            PasswordList.Add(Passwords_temp[i]);
+            if (ResultCount < maxList || IsLemitter) PasswordList2.Add(Passwords_temp[i]);
+            ResultCount++;
         }
         private void SearchButton_Click(object sender, EventArgs e)
         {
@@ -152,8 +171,14 @@ namespace WindowsFormsApp1
                     return;
                 }
             }
+            IsLemitter = TextLimiterCheckBox.Checked;
+            IsNotSearch = SearchNotCheckBox.Checked;
+
+            progressBar1.Value = 0;
+            progressBar1.Maximum = Passwords_temp.Length;
             isCompleted = false;
             ErrorText.Text = $"";
+            TextLimiterCheckBox.Enabled = false;
             SearchButton.Enabled = false;
             SearchWord = SearchTextBox.Text;
             SearchingMode = SearchingModeBox.Text;
@@ -162,6 +187,7 @@ namespace WindowsFormsApp1
         private void MTSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchButton.Enabled = true;
+            TextLimiterCheckBox.Enabled = true;
             isCompleted = true;
             if (ThreadErrorText != "OK")
             {
@@ -199,7 +225,6 @@ namespace WindowsFormsApp1
             try
             {
                 
-                progressBar1.Maximum = Passwords_temp.Length;
                 progressBar1.Value = ProgressInt;
             }
             catch
@@ -255,6 +280,31 @@ namespace WindowsFormsApp1
                 return true;
             }
             return false;
+        }
+
+        private void TextLimiterCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TextLimiterCheckBox.Checked)
+            {
+                DialogResult result = MessageBox.Show("表示上限を突破するとアプリが応答しない状態に陥る可能性があります。\nマシンが高スペックまたは大量のデータが必要でない限りは\nこのチェックボックスを無効にすることを推奨します。\n表示上限のリミッターを外しますか？",
+                    "警告 (よく読んでね!)",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button2);
+                if(result== DialogResult.No)
+                {
+                    TextLimiterCheckBox.Checked = false;
+                }
+            }
+            if (TextLimiterCheckBox.Checked)
+            {
+                TextLimiterCheckBox.Text = "うぉー！！フル回転！！！！";
+            }
+            else
+            {
+                TextLimiterCheckBox.Text = "表示上限を無視する";
+
+            }
         }
     }
 }
