@@ -50,6 +50,7 @@ namespace YokaiSearcher
             this.LogClearButton = new System.Windows.Forms.Button();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.ListCount = new System.Windows.Forms.Label();
+            this.ReloadThread = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -240,6 +241,11 @@ namespace YokaiSearcher
             this.ListCount.Size = new System.Drawing.Size(0, 12);
             this.ListCount.TabIndex = 18;
             // 
+            // ReloadThread
+            // 
+            this.ReloadThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ReloadThread_DoWork);
+            this.ReloadThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ReloadThread_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -294,6 +300,7 @@ namespace YokaiSearcher
         private System.Windows.Forms.Button LogClearButton;
         private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Label ListCount;
+        private System.ComponentModel.BackgroundWorker ReloadThread;
     }
 }
 

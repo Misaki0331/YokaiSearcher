@@ -59,7 +59,9 @@ namespace YokaiSearcher
             StreamReader sr=null;
             try
             {
-                for (int i = 0; i < Properties.Resources.DownloadList.Split('\n').Length; i++)
+                int count = 0;
+                int maxc = Properties.Resources.DownloadList.Split('\n').Length;
+                for (int i = 0; i < maxc; i++)
                 {
                     sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
@@ -67,10 +69,12 @@ namespace YokaiSearcher
                         string str = sr.ReadLine();
                         if (checkTextBox(str))
                         {
-
+                            count++;
+                            progressStr = $"{i}/{maxc} 取得中 : {count} 件";
                             PasswordList.Add(str);
                         }
                     }
+                    Application.DoEvents();
                     sr.Close();
                 }
                 Passwords = PasswordList.ToArray();
@@ -86,11 +90,14 @@ namespace YokaiSearcher
             GC.Collect();
         }
         bool downloadflg = false;
+        string progressStr="";
         private void initwork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                for (int i = 0; i < Properties.Resources.DownloadList.Split('\n').Length; i++)
+                int count = 0;
+                int maxc = Properties.Resources.DownloadList.Split('\n').Length;
+                for (int i = 0; i < maxc; i++)
                 {
                     StreamReader sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
@@ -99,6 +106,8 @@ namespace YokaiSearcher
                         if (str.Length == 14)
                         {
 
+                            count++;
+                            progressStr = $"{i}/{maxc} 取得中 : {count} 件";
                             PasswordList.Add(str);
                         }
                     }
@@ -349,7 +358,9 @@ namespace YokaiSearcher
                 Initwork.RunWorkerAsync();
                 while (!isCompleted)
                 {
+                    Text = progressStr;
                     Application.DoEvents();
+                    Thread.Sleep(20);
                 }
                 SearchTextBox.Enabled = true;
                 SearchButton.Enabled = true;
@@ -369,11 +380,20 @@ namespace YokaiSearcher
                     Thread.Sleep(20);
                     Application.DoEvents();
                 }
-                Text= "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText+" パスワードリスト更新中...";
+                Text= "パスワードリスト更新中...";
 
                 Application.DoEvents();
                 Enabled = true;
-                Reload();
+                Reloading = true;
+                ReloadThread.RunWorkerAsync();
+                Focus();
+                while (Reloading)
+                {
+                    Thread.Sleep(20);
+                    Application.DoEvents();
+                    Text = progressStr;
+                }
+                Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
                 if (Passwords != null) ListCount.Text = $"パスワード数 : {Passwords.Length}";
             }
             double percent = 0;
@@ -492,20 +512,20 @@ namespace YokaiSearcher
                     MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
             {
-                DownloaderForm dl = new DownloaderForm();
-                dl.Show();
-                this.Enabled = false;
-                while (dl.downloading)
-                {
-                    Thread.Sleep(20);
-                    Application.DoEvents();
-                }
-
-                this.Enabled = true;
-                Focus();
-                Reload();
+                downloadflg = true;
             }
             
+        }
+        bool Reloading;
+        private void ReloadThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Reload();
+        }
+
+        private void ReloadThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            Reloading = false;
         }
     }
 }
