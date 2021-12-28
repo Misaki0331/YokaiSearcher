@@ -48,10 +48,13 @@ namespace YokaiSearcher
             this.SearchLogTextBox = new System.Windows.Forms.TextBox();
             this.LogLabel = new System.Windows.Forms.Label();
             this.LogClearButton = new System.Windows.Forms.Button();
+            this.UpdateButton = new System.Windows.Forms.Button();
+            this.ListCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SearchTextBox
             // 
+            this.SearchTextBox.Enabled = false;
             this.SearchTextBox.Location = new System.Drawing.Point(325, 51);
             this.SearchTextBox.MaxLength = 100;
             this.SearchTextBox.Name = "SearchTextBox";
@@ -61,6 +64,7 @@ namespace YokaiSearcher
             // 
             // SearchButton
             // 
+            this.SearchButton.Enabled = false;
             this.SearchButton.Location = new System.Drawing.Point(508, 50);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(49, 19);
@@ -217,11 +221,32 @@ namespace YokaiSearcher
             this.LogClearButton.UseVisualStyleBackColor = true;
             this.LogClearButton.Click += new System.EventHandler(this.LogClearButton_Click);
             // 
+            // UpdateButton
+            // 
+            this.UpdateButton.Enabled = false;
+            this.UpdateButton.Location = new System.Drawing.Point(229, 100);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(75, 23);
+            this.UpdateButton.TabIndex = 17;
+            this.UpdateButton.Text = "データ更新";
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            // 
+            // ListCount
+            // 
+            this.ListCount.AutoSize = true;
+            this.ListCount.Location = new System.Drawing.Point(310, 105);
+            this.ListCount.Name = "ListCount";
+            this.ListCount.Size = new System.Drawing.Size(0, 12);
+            this.ListCount.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ListCount);
+            this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.LogClearButton);
             this.Controls.Add(this.LogLabel);
             this.Controls.Add(this.SearchLogTextBox);
@@ -267,6 +292,8 @@ namespace YokaiSearcher
         private System.Windows.Forms.TextBox SearchLogTextBox;
         private System.Windows.Forms.Label LogLabel;
         private System.Windows.Forms.Button LogClearButton;
+        private System.Windows.Forms.Button UpdateButton;
+        private System.Windows.Forms.Label ListCount;
     }
 }
 

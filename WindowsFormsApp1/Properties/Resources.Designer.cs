@@ -61,50 +61,21 @@ namespace YokaiSearcher.Properties {
         }
         
         /// <summary>
-        ///   ANKAAIT0.M.9G!
-        ///GMKAAJSMW.!8G!
-        ///GHAAEKNZ!!NY4-
-        ///AGWADZUYT5SYU-
-        ///GMAABIR..UUW0-
-        ///AKKAE5!4ZNWN.M
-        ///AABINGZ-.!97NG
-        ///ANKADNS-87E!N-
-        ///AHGWENN.M79DT0
-        ///GNAABN!Z-J7.D!
-        ///ANGABNU!7Y0I.M
-        ///GDWADB0U9.G3YU
-        ///ADHAR0U!MM.N!J
-        ///G9AADZZM8MI!G.
-        ///HD7AKD0Z-GM5N.
-        ///AYAAN-N3!GJM-!
-        ///GKAAEK-G!K!8ZZ
-        ///AIKAM!S-6.GN9G
-        ///G5BKATMN-R!2PT
-        ///GDWADU6GK8UU4-
-        ///GIAAG8ZKT9NZM!
-        ///EKAAG.MIG8!Y!Z
-        ///AABI09GU0.KM.M
-        ///AK5AGNE.I-0K9-
-        ///AHGAM69GK--G!.
-        ///EBAAN!8N-9JMU-
-        ///AHGAM.INB!9U.!
-        ///ADG5BR.TJ8YUN4
-        ///ANKAE4.T7IMN.0
-        ///GMWAB..8BSSUK-
-        ///DGWAD..S6TSPU-
-        ///H9AAMK.54GMZ.M
-        ///GABWGURNN374YU
-        ///APABGN!!NK9NZZ
-        ///EK [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///   https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_!.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_-.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_..txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_0.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_1.txt
+        ///https://raw.githubuserconte [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string passwords {
+        internal static string DownloadList {
             get {
-                return ResourceManager.GetString("passwords", resourceCulture);
+                return ResourceManager.GetString("DownloadList", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ver.1.09.2 に類似しているローカライズされた文字列を検索します。
+        ///   Ver.1.10 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string VersionText {
             get {

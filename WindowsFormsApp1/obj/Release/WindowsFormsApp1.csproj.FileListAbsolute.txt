@@ -1,10 +1,10 @@
-C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csproj.GenerateResource.cache
-C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csproj.CoreCompileInputs.cache
-C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csproj.AssemblyReference.cache
-C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.Form1.resources
-C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.Properties.Resources.resources
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.exe.config
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.exe
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.pdb
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.DownloaderForm.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.Form1.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.Properties.Resources.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csproj.GenerateResource.cache
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csproj.CoreCompileInputs.cache
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.exe
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release\YokaiSearcher.pdb

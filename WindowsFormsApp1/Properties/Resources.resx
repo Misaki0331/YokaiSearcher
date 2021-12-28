@@ -117,11 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="passwords" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\passwords.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+  <data name="DownloadList" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_!.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_-.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_..txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_0.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_1.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_2.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_3.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_4.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_5.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_6.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_7.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_8.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_9.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_A.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_B.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_C.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_D.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_E.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_F.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_G.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_H.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_I.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_J.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_K.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_L.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_M.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_N.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_O.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_P.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_Q.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_R.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_S.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_T.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_U.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_V.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_W.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_X.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_Y.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_Z.txt
+https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/tanzaku/passwords_nmc.txt</value>
   </data>
   <data name="VersionText" xml:space="preserve">
-    <value>Ver.1.09.2</value>
+    <value>Ver.1.10</value>
   </data>
 </root>

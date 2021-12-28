@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Threading;
+using System.IO;
 
 namespace YokaiSearcher
 {
@@ -38,28 +40,92 @@ namespace YokaiSearcher
             IsFirstSearch = true;
             Application.DoEvents();
         }
-
+        bool FirstRun;
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Text = "Loading...";
 
             ErrorText.Text = "";
             isCompleted = false;
-            Initwork.RunWorkerAsync();
-            while (!isCompleted)
-            {
-                Application.DoEvents();
-            }
+            FirstRun = true;
+
+
             Refreshing.Enabled = true;
             this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
            
         }
+        void Reload()
+        {
+            StreamReader sr=null;
+            try
+            {
+                for (int i = 0; i < 40; i++)
+                {
+                     sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
+                    while (sr.Peek() != -1)
+                    {
+                        string str = sr.ReadLine();
+                        if (str.Length == 14)
+                        {
 
-
+                            PasswordList.Add(str);
+                        }
+                    }
+                    sr.Close();
+                }
+                Passwords = PasswordList.ToArray();
+            }
+            catch (Exception ex)
+            {
+                if(sr!=null)sr.Close();
+                PasswordList.Clear();
+                Console.WriteLine(ex.Message);
+            }
+            Passwords_temp = Passwords;
+        }
+        bool downloadflg = false;
         private void initwork(object sender, DoWorkEventArgs e)
         {
-            Passwords = Properties.Resources.passwords.Split('\n');
+            try
+            {
+                for (int i = 0; i < 40; i++)
+                {
+                    StreamReader sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
+                    while (sr.Peek() != -1)
+                    {
+                        string str = sr.ReadLine();
+                        if (str.Length == 14)
+                        {
 
+                            PasswordList.Add(str);
+                        }
+                    }
+                }
+                Passwords = PasswordList.ToArray();
+            }
+            catch (System.IO.DirectoryNotFoundException ex)
+            {
+                PasswordList.Clear();
+                DialogResult result = MessageBox.Show("パスワードのデータをダウンロードする必要があります。\nまた、100MB以上のデータダウンロードが予測されます。\nダウンロードしますか？",
+                    "ダウンロードが必要です！",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+                if (result == DialogResult.Yes)
+                {
+                    downloadflg = true;
+                }
+                else
+                {
+                    Environment.Exit(-1);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                PasswordList.Clear();
+                Console.WriteLine(ex.Message);
+            }
             Passwords_temp = Passwords;
             isCompleted = true;
 
@@ -263,7 +329,40 @@ namespace YokaiSearcher
 
         private void Refresh_Tick(object sender, EventArgs e)
         {
-            double percent = ((double)ProgressInt / Passwords_temp.Length * 100.00);
+            if (FirstRun)
+            {
+
+                this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText+" Please wait...";
+                FirstRun = false;
+                Initwork.RunWorkerAsync();
+                while (!isCompleted)
+                {
+                    Application.DoEvents();
+                }
+                SearchTextBox.Enabled = true;
+                SearchButton.Enabled = true;
+                UpdateButton.Enabled = true;
+                this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
+                if(Passwords!=null)ListCount.Text = $"パスワード数 : {Passwords.Length}";
+            }
+            if (downloadflg)
+            {
+                downloadflg = false;
+
+                DownloaderForm dl = new DownloaderForm();
+                dl.Show();
+                Enabled = false;
+                while (dl.downloading)
+                {
+                    Thread.Sleep(20);
+                    Application.DoEvents();
+                }
+                Enabled = true;
+                Reload();
+                if (Passwords != null) ListCount.Text = $"パスワード数 : {Passwords.Length}";
+            }
+            double percent = 0;
+            if (Passwords_temp!=null) percent = ((double)ProgressInt / Passwords_temp.Length * 100.00);
             if (percent > 100) percent = 100;
             try
             {
@@ -368,6 +467,31 @@ namespace YokaiSearcher
             LogClearButton.Location = new Point(this.Size.Width - 93, this.Size.Height - 229);
             LogLabel.Location = new Point(this.Size.Width - 290, this.Size.Height - 215);
             PasswordResultBox.Size = new Size(PasswordResultBox.Size.Width, this.Height - 76);
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("もう一度ダウンロードしますか？",
+                    "確認",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+            if (result == DialogResult.Yes)
+            {
+                DownloaderForm dl = new DownloaderForm();
+                dl.Show();
+                this.Enabled = false;
+                while (dl.downloading)
+                {
+                    Thread.Sleep(20);
+                    Application.DoEvents();
+                }
+
+                this.Enabled = true;
+                Focus();
+                Reload();
+            }
+            
         }
     }
 }
