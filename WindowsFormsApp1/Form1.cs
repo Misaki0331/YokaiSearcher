@@ -340,6 +340,8 @@ namespace YokaiSearcher
             }
             Passwords_temp = PasswordList.ToArray();
             Passwords_temp2 = PasswordList2.ToArray();
+            PasswordList.Clear();
+            PasswordList2.Clear();
             StringComparer cmp = StringComparer.Ordinal;
             Array.Sort(Passwords_temp2, cmp);
             PasswordResultBox.Lines = Passwords_temp2;
@@ -385,7 +387,7 @@ namespace YokaiSearcher
                 SearchButton.Enabled = true;
                 UpdateButton.Enabled = true;
                 this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
-                if(Passwords!=null)ListCount.Text = $"パスワード数 : {Passwords.Length}";
+                if(Passwords!=null)ListCount.Text = $"パスワード数 : {Passwords.Length} 件";
             }
             if (downloadflg)
             {
