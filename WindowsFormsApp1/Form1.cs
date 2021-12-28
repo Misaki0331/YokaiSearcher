@@ -59,9 +59,9 @@ namespace YokaiSearcher
             StreamReader sr=null;
             try
             {
-                for (int i = 0; i < 40; i++)
+                for (int i = 0; i < Properties.Resources.DownloadList.Split('\n').Length; i++)
                 {
-                     sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
+                    sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
                     {
                         string str = sr.ReadLine();
@@ -88,7 +88,7 @@ namespace YokaiSearcher
         {
             try
             {
-                for (int i = 0; i < 40; i++)
+                for (int i = 0; i < Properties.Resources.DownloadList.Split('\n').Length; i++)
                 {
                     StreamReader sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
@@ -100,13 +100,14 @@ namespace YokaiSearcher
                             PasswordList.Add(str);
                         }
                     }
+                    sr.Close();
                 }
                 Passwords = PasswordList.ToArray();
             }
-            catch (System.IO.DirectoryNotFoundException ex)
+            catch (System.IO.DirectoryNotFoundException)
             {
                 PasswordList.Clear();
-                DialogResult result = MessageBox.Show("パスワードのデータをダウンロードする必要があります。\nまた、100MB以上のデータダウンロードが予測されます。\nダウンロードしますか？",
+                DialogResult result = MessageBox.Show("パスワードのデータをダウンロードする必要があります。\nモバイル回線の方はWi-Fi回線に接続することを強く推奨します。\nダウンロードしますか？",
                     "ダウンロードが必要です！",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning,
@@ -243,6 +244,11 @@ namespace YokaiSearcher
                     return;
                 }
             }
+            if (Passwords_temp == null)
+            {
+                ErrorText.Text = $"データがありません。データ更新からダウンロードしてください。";
+                return;
+            }
             IsContinueSearch = SearchContinueCheckBox.Checked;
             if (!IsContinueSearch)
             {
@@ -252,6 +258,7 @@ namespace YokaiSearcher
             IsLemitter = TextLimiterCheckBox.Checked;
             IsNotSearch = SearchNotCheckBox.Checked;
             progressBar1.Value = 0;
+            
             progressBar1.Maximum = Passwords_temp.Length;
             isCompleted = false;
             ErrorText.Text = $"";
