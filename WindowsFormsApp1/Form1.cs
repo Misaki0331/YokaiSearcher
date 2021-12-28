@@ -87,6 +87,8 @@ namespace YokaiSearcher
                 Console.WriteLine(ex.Message);
             }
             Passwords_temp = Passwords;
+
+            progressStr = $"メモリの掃除中...";
             GC.Collect();
         }
         bool downloadflg = false;
@@ -141,6 +143,8 @@ namespace YokaiSearcher
             }
             Passwords_temp = Passwords;
             isCompleted = true;
+
+            progressStr = $"メモリの掃除中...";
             GC.Collect();
 
         }
