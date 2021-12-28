@@ -61,13 +61,12 @@ namespace YokaiSearcher.Properties {
         }
         
         /// <summary>
-        ///   https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_!.txt
-        ///https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_-.txt
-        ///https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_..txt
-        ///https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_0.txt
-        ///https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_1.txt
-        ///https://github.com/kmikage/yokai-password/tree/main/passwords/passwords_2.txt
-        ///https://github.com/kmikage/yokai-passw [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///   https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/passwords_!.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/passwords_-.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/passwords_..txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/passwords_0.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passwords/passwords_1.txt
+        ///https://raw.githubusercontent.com/kmikage/yokai-password/main/passw [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string DownloadList {
             get {

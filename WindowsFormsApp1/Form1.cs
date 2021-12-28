@@ -65,7 +65,7 @@ namespace YokaiSearcher
                     while (sr.Peek() != -1)
                     {
                         string str = sr.ReadLine();
-                        if (str.Length == 14)
+                        if (checkTextBox(str))
                         {
 
                             PasswordList.Add(str);
@@ -74,6 +74,7 @@ namespace YokaiSearcher
                     sr.Close();
                 }
                 Passwords = PasswordList.ToArray();
+                PasswordList.Clear();
             }
             catch (Exception ex)
             {
@@ -82,6 +83,7 @@ namespace YokaiSearcher
                 Console.WriteLine(ex.Message);
             }
             Passwords_temp = Passwords;
+            GC.Collect();
         }
         bool downloadflg = false;
         private void initwork(object sender, DoWorkEventArgs e)
@@ -103,6 +105,7 @@ namespace YokaiSearcher
                     sr.Close();
                 }
                 Passwords = PasswordList.ToArray();
+                PasswordList.Clear();
             }
             catch (System.IO.DirectoryNotFoundException)
             {
@@ -129,6 +132,7 @@ namespace YokaiSearcher
             }
             Passwords_temp = Passwords;
             isCompleted = true;
+            GC.Collect();
 
         }
 
@@ -296,6 +300,7 @@ namespace YokaiSearcher
         }
         private void MTSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            GC.Collect();
             SearchButton.Enabled = true;
             TextLimiterCheckBox.Enabled = true;
             isCompleted = true;
@@ -364,6 +369,9 @@ namespace YokaiSearcher
                     Thread.Sleep(20);
                     Application.DoEvents();
                 }
+                Text= "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText+" パスワードリスト更新中...";
+
+                Application.DoEvents();
                 Enabled = true;
                 Reload();
                 if (Passwords != null) ListCount.Text = $"パスワード数 : {Passwords.Length}";
@@ -419,7 +427,6 @@ namespace YokaiSearcher
                     }else
                     if (str[i] == contain[j])
                     {
-                        Console.WriteLine($"{i}:{str[i]}={j}");
                         count++;
                         break;
                     }
