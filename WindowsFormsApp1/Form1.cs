@@ -70,13 +70,14 @@ namespace YokaiSearcher
                         if (checkTextBox(str))
                         {
                             count++;
-                            progressStr = $"{i}/{maxc} 取得中 : {count} 件";
+                            if (count % 1000 == 0) progressStr = $"{i}/{maxc} 取得中 : {count} 件";
                             PasswordList.Add(str);
                         }
                     }
                     Application.DoEvents();
                     sr.Close();
                 }
+                progressStr = $"データをメモリに格納中...";
                 Passwords = PasswordList.ToArray();
                 PasswordList.Clear();
             }
@@ -109,12 +110,14 @@ namespace YokaiSearcher
                         {
 
                             count++;
-                            progressStr = $"{i}/{maxc} 取得中 : {count} 件";
+                            if(count%1000==0)progressStr = $"{i}/{maxc} 取得中 : {count} 件";
                             PasswordList.Add(str);
                         }
                     }
                     sr.Close();
                 }
+
+                progressStr = $"データをメモリに格納中...";
                 Passwords = PasswordList.ToArray();
                 PasswordList.Clear();
             }
@@ -499,7 +502,7 @@ namespace YokaiSearcher
         {
 
             Console.WriteLine($"{Size.Width},{Size.Height}");
-            progressBar1.Size = new Size(this.Size.Width - 6, progressBar1.Size.Height);
+            progressBar1.Size = new Size(this.Size.Width - 8, progressBar1.Size.Height);
             ProgressLabel.Location = new Point(this.Size.Width - 106, ProgressLabel.Location.Y);
             SearchLogTextBox.Location = new Point(this.Size.Width - 288, this.Size.Height - 200);
             LogClearButton.Location = new Point(this.Size.Width - 93, this.Size.Height - 229);
