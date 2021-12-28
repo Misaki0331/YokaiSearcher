@@ -250,15 +250,25 @@ namespace YokaiSearcher
         }
         void SearchEnter()
         {
-            
+            string search=SearchTextBox.Text;
+            search = search.Replace("な", "n");
+            search = search.Replace("む", "m");
+            search = search.Replace("こ", "c");
+            search = search.Replace("ナ", "n");
+            search = search.Replace("ム", "m");
+            search = search.Replace("コ", "c");
+            search = search.Replace("ﾅ", "n");
+            search = search.Replace("ﾑ", "m");
+            search = search.Replace("ｺ", "c");
+
             if (SearchingModeBox.Text != "正規表現")
             {
-                if (SearchTextBox.Text.Length > 14)
+                if (search.Length > 14)
                 {
                     ErrorText.Text = $"14文字を超えています。";
                     return;
                 }
-                if (!checkTextBox(SearchTextBox.Text))
+                if (!checkTextBox(search))
                 {
                     ErrorText.Text = $"無効な文字が含まれています。";
                     return;
@@ -284,7 +294,7 @@ namespace YokaiSearcher
             ErrorText.Text = $"";
             TextLimiterCheckBox.Enabled = false;
             SearchButton.Enabled = false;
-            SearchWord = SearchTextBox.Text;
+            SearchWord = search;
             SearchingMode = SearchingModeBox.Text;
             MTSearch.RunWorkerAsync();
         }
