@@ -63,7 +63,7 @@ namespace YokaiSearcher
                 int maxc = Properties.Resources.DownloadList.Split('\n').Length;
                 for (int i = 0; i < maxc; i++)
                 {
-                    sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
+                    sr = new StreamReader($"temp/{i}.bin", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
                     {
                         string str = sr.ReadLine();
@@ -102,7 +102,7 @@ namespace YokaiSearcher
                 int maxc = Properties.Resources.DownloadList.Split('\n').Length;
                 for (int i = 0; i < maxc; i++)
                 {
-                    StreamReader sr = new StreamReader($"temp/{i}.txt", Encoding.GetEncoding("Shift_JIS"));
+                    StreamReader sr = new StreamReader($"temp/{i}.bin", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
                     {
                         string str = sr.ReadLine();
@@ -261,6 +261,8 @@ namespace YokaiSearcher
             search = search.Replace("ﾑ", "m");
             search = search.Replace("ｺ", "c");
 
+            search = search.Replace("！", "!");
+
             if (SearchingModeBox.Text != "正規表現")
             {
                 if (search.Length > 14)
@@ -391,6 +393,7 @@ namespace YokaiSearcher
 
                 DownloaderForm dl = new DownloaderForm();
                 dl.Show();
+                Hide();
                 Enabled = false;
                 while (dl.downloading)
                 {
@@ -398,7 +401,7 @@ namespace YokaiSearcher
                     Application.DoEvents();
                 }
                 Text= "パスワードリスト更新中...";
-
+                Show();
                 Application.DoEvents();
                 Enabled = true;
                 Reloading = true;
@@ -412,6 +415,46 @@ namespace YokaiSearcher
                 }
                 Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
                 if (Passwords != null) ListCount.Text = $"パスワード数 : {Passwords.Length}";
+            }
+            if (SavingFlg)
+            {
+                SearchButton.Enabled = false;
+                SaveResultButton.Enabled = false;
+                UpdateButton.Enabled = false;
+                SavingFlg = false;
+                SearchClearButton.Enabled = false;
+                SearchTextBox.Enabled = false;
+                SaveResult.RunWorkerAsync();
+                isCompleted = false;
+                while (!isCompleted)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(20);
+                    Text = progressStr;
+                }
+                Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
+
+                SearchButton.Enabled = true;
+                SaveResultButton.Enabled = true;
+                UpdateButton.Enabled = true;
+                SearchClearButton.Enabled = true;
+                SearchTextBox.Enabled = true;
+                if (ThreadErrorText == "")
+                {
+                    MessageBox.Show("検索結果を正常に保存しました。",
+                        "データの保存",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1);
+                }
+                else
+                {
+                    MessageBox.Show($"検索結果を正常に保存できませんでした。\n{ThreadErrorText}",
+                        "データの保存",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1);
+                }
             }
             double percent = 0;
             if (Passwords_temp!=null) percent = ((double)ProgressInt / Passwords_temp.Length * 100.00);
@@ -432,7 +475,7 @@ namespace YokaiSearcher
 
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Enter)
+            if (e.KeyData == Keys.Enter&&SearchButton.Enabled)
             {
                 SearchEnter();
             }
@@ -543,6 +586,47 @@ namespace YokaiSearcher
         {
 
             Reloading = false;
+        }
+
+        private void SaveResultButton_Click(object sender, EventArgs e)
+        {
+            if(ResultCount>0)
+            saveFileDialog.ShowDialog();
+        }
+        bool SavingFlg = false;
+        private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            SavingFlg = true;
+
+        }
+
+        private void SaveResult_DoWork(object sender, DoWorkEventArgs e)
+        {
+            progressStr = $"ソートしています... (この処理には時間がかかることがあります)";
+
+            StringComparer cmp = StringComparer.Ordinal;
+            Array.Sort(Passwords_temp, cmp);
+            GC.Collect();
+            try
+            {
+                // テキストファイル出力（新規作成）
+                using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false))
+                {
+                    int c=Passwords_temp.Length;
+                    for(int i = 0; i < c; i++)
+                    {
+                        sw.WriteLine(Passwords_temp[i]);
+                        if (i % 100 == 0) progressStr = $"結果を出力中... {i}/{c} ({((double)i / c * 100.0).ToString("F2")}%)";
+                    }
+                }
+                ThreadErrorText = "";
+            }
+            // 例外処理
+            catch (IOException ex)
+            {
+                ThreadErrorText = ex.Message;
+            }
+            isCompleted = true;
         }
     }
 }

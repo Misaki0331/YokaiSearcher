@@ -75,7 +75,7 @@ namespace YokaiSearcher.Properties {
         }
         
         /// <summary>
-        ///   Ver.1.11.2 に類似しているローカライズされた文字列を検索します。
+        ///   Ver.1.12 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string VersionText {
             get {

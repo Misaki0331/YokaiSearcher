@@ -30,7 +30,7 @@ namespace YokaiSearcher
                 filescount = downloadlist.Length;
                 for (progresscount = 0; progresscount < filescount; progresscount++)
                 {
-                    string fileName = $"temp/{progresscount}.txt";
+                    string fileName = $"temp/{progresscount}.bin";
                     //ダウンロード基のURL
                     Uri u = new Uri(downloadlist[progresscount]);
 
@@ -67,13 +67,25 @@ namespace YokaiSearcher
             }
 }
         int percent;
+        long downloadTotalSize;
+        long downloadGetSize;
         void downloadClient_DownloadProgressChanged(object sender,
             System.Net.DownloadProgressChangedEventArgs e)
         {
             try
             {
-                
-                percent = prc * 100 + e.ProgressPercentage;
+                downloadTotalSize = e.TotalBytesToReceive;
+                downloadGetSize =e .BytesReceived;
+                double p = (double)e.BytesReceived / e.TotalBytesToReceive * 1000.0;
+                if (e.TotalBytesToReceive == 0)
+                {
+
+                    percent = prc * 1000;
+                }
+                else
+                {
+                    percent = prc * 1000 + (int)p;
+                }
             }
             catch
             {
@@ -113,7 +125,7 @@ namespace YokaiSearcher
                     errorcount = 0;
                     IsNextGo = true;
                     prc++;
-                    percent = prc * 100;
+                    percent = prc * 1000;
                 }
                 if (prc == filescount)
                 {
@@ -152,16 +164,29 @@ namespace YokaiSearcher
                 Close();
                 downloading = false;
             }
-            progressBar1.Maximum = filescount * 100;
+            progressBar1.Maximum = filescount * 1000;
             progressBar1.Value = percent;
             if (downloadlist == null) return;
-            label2.Text = $"{prc}/{filescount} {percent%100}%";
-            Text = $"ダウンロード進行中... {((double)percent / filescount).ToString("F2")}%";
+            label2.Text = $"{prc}/{filescount} {(percent%1000/10.0).ToString("F1")}% ({(downloadGetSize/1024/1024.0).ToString("F2")}MB/{(downloadTotalSize / 1024 / 1024.0).ToString("F2")}MB)";
+            Text = $"ダウンロード進行中... {((double)percent / filescount/10).ToString("F2")}%";
         }
 
         private void DownloaderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(!DoneFlg)e.Cancel = true;
+        }
+        int count = 1;
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            string str = "";
+            
+            for(int i=0; i < count; i++)
+            {
+                str += ".";
+            }
+            count++;
+            if (count > 5) count = 1;
+            label1.Text = "現在パスワードをダウンロード中" + str;
         }
     }
 }
