@@ -54,6 +54,9 @@ namespace YokaiSearcher
             this.SaveResultButton = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SaveResult = new System.ComponentModel.BackgroundWorker();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.OpenResult = new System.ComponentModel.BackgroundWorker();
+            this.LoadSearchIndexButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -228,7 +231,7 @@ namespace YokaiSearcher
             // UpdateButton
             // 
             this.UpdateButton.Enabled = false;
-            this.UpdateButton.Location = new System.Drawing.Point(229, 100);
+            this.UpdateButton.Location = new System.Drawing.Point(229, 134);
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(75, 23);
             this.UpdateButton.TabIndex = 17;
@@ -239,7 +242,7 @@ namespace YokaiSearcher
             // ListCount
             // 
             this.ListCount.AutoSize = true;
-            this.ListCount.Location = new System.Drawing.Point(310, 105);
+            this.ListCount.Location = new System.Drawing.Point(227, 160);
             this.ListCount.Name = "ListCount";
             this.ListCount.Size = new System.Drawing.Size(0, 12);
             this.ListCount.TabIndex = 18;
@@ -251,7 +254,7 @@ namespace YokaiSearcher
             // 
             // SaveResultButton
             // 
-            this.SaveResultButton.Location = new System.Drawing.Point(508, 75);
+            this.SaveResultButton.Location = new System.Drawing.Point(310, 100);
             this.SaveResultButton.Name = "SaveResultButton";
             this.SaveResultButton.Size = new System.Drawing.Size(75, 19);
             this.SaveResultButton.TabIndex = 19;
@@ -262,6 +265,7 @@ namespace YokaiSearcher
             // saveFileDialog
             // 
             this.saveFileDialog.Filter = "標準テキストファイル (*.txt) | *.txt";
+            this.saveFileDialog.RestoreDirectory = true;
             this.saveFileDialog.Title = "ファイルに検索結果を保存する...";
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
@@ -269,11 +273,34 @@ namespace YokaiSearcher
             // 
             this.SaveResult.DoWork += new System.ComponentModel.DoWorkEventHandler(this.SaveResult_DoWork);
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            this.openFileDialog.Filter = "標準テキストファイル (*.txt) | *.txt";
+            this.openFileDialog.RestoreDirectory = true;
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
+            // 
+            // OpenResult
+            // 
+            this.OpenResult.DoWork += new System.ComponentModel.DoWorkEventHandler(this.OpenResult_DoWork);
+            this.OpenResult.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OpenResult_RunWorkerCompleted);
+            // 
+            // LoadSearchIndexButton
+            // 
+            this.LoadSearchIndexButton.Location = new System.Drawing.Point(229, 100);
+            this.LoadSearchIndexButton.Name = "LoadSearchIndexButton";
+            this.LoadSearchIndexButton.Size = new System.Drawing.Size(75, 19);
+            this.LoadSearchIndexButton.TabIndex = 20;
+            this.LoadSearchIndexButton.Text = "データ読込";
+            this.LoadSearchIndexButton.UseVisualStyleBackColor = true;
+            this.LoadSearchIndexButton.Click += new System.EventHandler(this.LoadSearchIndexButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.LoadSearchIndexButton);
             this.Controls.Add(this.SaveResultButton);
             this.Controls.Add(this.ListCount);
             this.Controls.Add(this.UpdateButton);
@@ -328,6 +355,9 @@ namespace YokaiSearcher
         private System.Windows.Forms.Button SaveResultButton;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.ComponentModel.BackgroundWorker SaveResult;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.ComponentModel.BackgroundWorker OpenResult;
+        private System.Windows.Forms.Button LoadSearchIndexButton;
     }
 }
 
