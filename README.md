@@ -39,6 +39,9 @@ https://twitter.com/4STUDIO4/status/1475676624087810051?s=20
 
 ### あなたが妖怪道中記14文字の真のパスワードを見つけるかもしれません！
 まずは情報収集のためにDiscordでパスワードなどの交換をした方が良いかもしれません。
-discord.gg/WzrDAQBfgj
+
+https://discord.gg/WzrDAQBfgj
+
 真のパスワードを見つけたら 4ST さんにパスワードを送信してみましょう。
+
 https://twitter.com/4STUDIO4/
