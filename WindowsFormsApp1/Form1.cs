@@ -15,6 +15,11 @@ namespace YokaiSearcher
 {
     public partial class Form1 : Form
     {
+        int progress_value = 0;
+        int progress_max = 100;
+        string progress_title ="";
+        ProgressWindow pw = new ProgressWindow();
+
         string[] Passwords;
         string[] Passwords_temp;
         string[] Passwords_temp2;
@@ -59,13 +64,28 @@ namespace YokaiSearcher
         }
         void WaitForComplete()
         {
+            Hide();
+            pw.ExecuteTitle = progress_title;
+            pw.Show();
             isCompleted = false;
             while (!isCompleted)
             {
                 Text = progressStr;
+                try
+                {
+                    pw.progressBar.Maximum = progress_max;
+                    pw.progressBar.Value = progress_value;
+                }
+                catch
+                {
+
+                }
+                pw.ProgressName.Text = progressStr;
                 Application.DoEvents();
                 Thread.Sleep(20);
             }
+            pw.Hide();
+            Show();
             this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -124,6 +144,8 @@ namespace YokaiSearcher
         string progressStr="";
         private void initwork(object sender, DoWorkEventArgs e)
         {
+            Thread.Sleep(500);
+            progressStr = "データを読み込んでいます...";
             try
             {
                 int count = 0;
@@ -138,19 +160,24 @@ namespace YokaiSearcher
                         {
 
                             count++;
-                            if(count%1000==0)progressStr = $"{i}/{maxc} 取得中 : {count} 件";
+                            if(count%1000==0)progressStr = $"{i}/{maxc} 取得中 : { string.Format("{0:N0}", count)} 件";
+                            progress_max = maxc;
+                            progress_value = i;
                             PasswordList.Add(str);
                         }
                     }
                     sr.Close();
                 }
 
+                progress_value = maxc;
                 progressStr = $"データをメモリに格納中...";
                 Passwords = PasswordList.ToArray();
                 PasswordList.Clear();
             }
             catch (System.IO.DirectoryNotFoundException)
             {
+                progressStr = "データ入力エラー発生";
+
                 PasswordList.Clear();
                 DialogResult result = MessageBox.Show("パスワードのデータをダウンロードする必要があります。\nモバイル回線の方はWi-Fi回線に接続することを強く推奨します。\nダウンロードしますか？",
                     "ダウンロードが必要です！",
@@ -159,6 +186,7 @@ namespace YokaiSearcher
                     MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.Yes)
                 {
+                    progressStr = "ダウンロード中...";
                     downloadflg = true;
                 }
                 else
@@ -257,7 +285,7 @@ namespace YokaiSearcher
 
                 }
                 isCompleted = true;
-                if (ResultCount > maxList&&!IsLemitter) throw new IndexOutOfRangeException($"{maxList} 個を超えています。一部は省略しました。");
+                if (ResultCount > maxList&&!IsLemitter) throw new IndexOutOfRangeException($"{ string.Format("{0:N0}", maxList)} 個を超えています。一部は省略しました。");
                 ThreadErrorText = "OK";
             }
             catch(Exception ex)
@@ -403,14 +431,15 @@ namespace YokaiSearcher
                 this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText+" Please wait...";
                 FirstRun = false;
                 Initwork.RunWorkerAsync();
+                progress_title = "起動処理を行っています";
                 WaitForComplete();
                 ButtonsEnable(true);
-                if (Passwords!=null)ListCount.Text = $"パスワード数 : {Passwords.Length} 件";
+                if (Passwords!=null)ListCount.Text = $"パスワード数 : { string.Format("{0:N0}", Passwords.Length)} 件";
             }
             if (downloadflg)
             {
                 downloadflg = false;
-
+                pw.Hide();
                 DownloaderForm dl = new DownloaderForm();
                 dl.Show();
                 Hide();
@@ -424,23 +453,20 @@ namespace YokaiSearcher
                 Show();
                 Application.DoEvents();
                 Enabled = true;
-                Reloading = true;
+                isCompleted = false;
                 ReloadThread.RunWorkerAsync();
                 Focus();
-                while (Reloading)
-                {
-                    Thread.Sleep(20);
-                    Application.DoEvents();
-                    Text = progressStr;
-                }
-                Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
-                if (Passwords != null) ListCount.Text = $"パスワード数 : {Passwords.Length} 件";
+
+                progress_title = "データを読み込んでいます";
+                WaitForComplete();
+                if (Passwords != null) ListCount.Text = $"パスワード数 : { string.Format("{0:N0}", Passwords.Length)} 件";
             }
             if (SavingFlg)
             {
                 SavingFlg = false;
                 ButtonsEnable(false);
                 SaveResult.RunWorkerAsync();
+                progress_title = "検索結果の保存中";
                 WaitForComplete();
                 ButtonsEnable(true);
                 if (ThreadErrorText == "")
@@ -465,6 +491,7 @@ namespace YokaiSearcher
                 IsOpenData = false;
                 ButtonsEnable(false);
                 OpenResult.RunWorkerAsync();
+                progress_title = "データの読込中";
                 WaitForComplete();
                 ButtonsEnable(true);
                 if (ThreadErrorText == "")
@@ -474,7 +501,7 @@ namespace YokaiSearcher
                     SearchLog += $"⇒{OpenedCount.ToString().PadLeft(8, ' ')}件 データ読込\n";
 
                     SearchLogTextBox.Lines = SearchLog.Split('\n');
-                    MessageBox.Show($"データを一時的に読み込みしました。\n新規検索またはクリアした場合は再度読み込みする必要があります。\n\n有効なデータ数 : {OpenedCount} 件",
+                    MessageBox.Show($"データを一時的に読み込みしました。\n新規検索またはクリアした場合は再度読み込みする必要があります。\n\n有効なデータ数 : { string.Format("{0:N0}", OpenedCount)} 件",
                         "データ読込完了",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information,
@@ -501,7 +528,7 @@ namespace YokaiSearcher
             {
 
             }
-            label1.Text = $"見つかった数 : {ResultCount}件";
+            label1.Text = $"見つかった数 : { string.Format("{0:N0}", ResultCount)}件";
             ProgressLabel.Text = $"{percent.ToString("F2")}%";
             
         }
@@ -609,7 +636,6 @@ namespace YokaiSearcher
             }
             
         }
-        bool Reloading;
         private void ReloadThread_DoWork(object sender, DoWorkEventArgs e)
         {
             Reload();
@@ -618,7 +644,7 @@ namespace YokaiSearcher
         private void ReloadThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
-            Reloading = false;
+            isCompleted = true; ;
         }
 
         private void SaveResultButton_Click(object sender, EventArgs e)
@@ -635,7 +661,9 @@ namespace YokaiSearcher
 
         private void SaveResult_DoWork(object sender, DoWorkEventArgs e)
         {
-            progressStr = $"ソートしています... (この処理には時間がかかることがあります)";
+            progress_value = 0;
+            progress_max = 100;
+            progressStr = $"ソートしています...\n(この処理には時間がかかることがあります)";
 
             StringComparer cmp = StringComparer.Ordinal;
             Array.Sort(Passwords_temp, cmp);
@@ -649,7 +677,13 @@ namespace YokaiSearcher
                     for(int i = 0; i < c; i++)
                     {
                         sw.WriteLine(Passwords_temp[i]);
-                        if (i % 1000 == 0) progressStr = $"結果を出力中... {i}/{c} ({((double)i / c * 100.0).ToString("F2")}%)";
+
+                        if (i % 1000 == 0)
+                        {
+                            progress_max = c;
+                            progress_value = i;
+                            progressStr = $"結果を出力中...\n{ string.Format("{0:N0}", i)}/{ string.Format("{0:N0}", c)} ({((double)i / c * 100.0).ToString("F2")}%)";
+                        }
                     }
                 }
                 ThreadErrorText = "";
@@ -670,6 +704,8 @@ namespace YokaiSearcher
         int OpenedCount;
         private void OpenResult_DoWork(object sender, DoWorkEventArgs e)
         {
+            progress_value = 0;
+            progress_max = 100;
             OpenedCount = 0;
             int count = 0;
             progressStr = "解析済みデータの読み込み中です...";
@@ -683,7 +719,9 @@ namespace YokaiSearcher
                     if (checkTextBox(str))
                     {
                         OpenedCount++;
-                        if (OpenedCount % 1000 == 0) progressStr = $"データ読込中... {OpenedCount} 件";
+                        if (OpenedCount % 1000 == 0) { 
+                            progressStr = $"データ読込中... { string.Format("{0:N0}", OpenedCount)} 件";
+                        }
                         PasswordList.Add(str);
                     }
                 }
@@ -692,6 +730,7 @@ namespace YokaiSearcher
                     throw new ArgumentOutOfRangeException("有効なパスワードがありませんでした。正しいファイルであるかご確認ください。");
 
                 }
+                progress_value = 99;
                 progressStr = "データをメモリに格納中です...";
                 Passwords_temp = PasswordList.ToArray();
                 PasswordList.Clear();

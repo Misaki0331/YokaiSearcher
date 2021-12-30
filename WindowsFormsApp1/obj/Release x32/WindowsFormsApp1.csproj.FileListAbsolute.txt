@@ -1,0 +1,11 @@
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.exe.config
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.exe
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\bin\Release\YokaiSearcher.pdb
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.DownloaderForm.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.Form1.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.ProgressWindow.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.Properties.Resources.resources
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\WindowsFormsApp1.csproj.GenerateResource.cache
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.exe
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\Release x32\YokaiSearcher.pdb
