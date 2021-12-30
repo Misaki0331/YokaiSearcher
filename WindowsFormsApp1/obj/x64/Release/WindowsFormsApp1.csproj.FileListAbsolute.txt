@@ -9,3 +9,4 @@ C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\x64\Release\WindowsFormsApp1.csproj.CoreCompileInputs.cache
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\x64\Release\YokaiSearcher.exe
 C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\x64\Release\YokaiSearcher.pdb
+C:\Users\Misaki\source\repos\WindowsFormsApp1\YokaiSearcher\WindowsFormsApp1\obj\x64\Release\WindowsFormsApp1.csproj.AssemblyReference.cache

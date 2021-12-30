@@ -275,7 +275,6 @@ namespace YokaiSearcher
             // 
             // openFileDialog
             // 
-            this.openFileDialog.FileName = "openFileDialog1";
             this.openFileDialog.Filter = "標準テキストファイル (*.txt) | *.txt";
             this.openFileDialog.RestoreDirectory = true;
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);

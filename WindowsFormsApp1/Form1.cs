@@ -118,7 +118,9 @@ namespace YokaiSearcher
                         if (checkTextBox(str))
                         {
                             count++;
-                            if (count % 1000 == 0) progressStr = $"{i}/{maxc} 取得中 : {count} 件";
+                            if (count % 1000 == 0) progressStr = $"{i}/{maxc} 取得中 : { string.Format("{0:N0}", count)} 件";
+                            progress_max = maxc;
+                            progress_value = i;
                             PasswordList.Add(str);
                         }
                     }
