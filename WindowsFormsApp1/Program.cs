@@ -52,7 +52,7 @@ namespace YokaiSearcher
             if (ex.GetType().ToString() == "System.OutOfMemoryException")
             {
 
-                MessageBox.Show("申し訳ありません。十分に処理するメモリが足りない為終了する必要があります。\nメモリを4GB以上搭載してもこのエラーが発生する場合は不具合ではございません。\n\n開発者Twitter : @0x7FF Discord : Misaki#0331\n\n" +
+                MessageBox.Show("申し訳ありません。十分に処理するメモリが足りない為終了する必要があります。\nメモリを4GB以上搭載してもこのエラーが発生する場合は64bitバージョンの使用をご検討ください。\n\n開発者Twitter : @0x7FF Discord : Misaki#0331\n\n" +
               "【エラー内容】\n" + ex.Message + "\n\n" +
               "【スタックトレース】\n" + ex.StackTrace, "YokaiSearcherで致命的なエラーが発生しました。", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

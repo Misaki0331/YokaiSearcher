@@ -19,7 +19,8 @@ namespace YokaiSearcher
         int progress_max = 100;
         string progress_title ="";
         ProgressWindow pw = new ProgressWindow();
-
+        int[] liststart=new int[42];
+        int[] listDeepStart = new int[42 * 42];
         string[] Passwords;
         string[] Passwords_temp;
         string[] Passwords_temp2;
@@ -73,12 +74,12 @@ namespace YokaiSearcher
                 Text = progressStr;
                 try
                 {
-                    pw.progressBar.Maximum = progress_max;
                     pw.progressBar.Value = progress_value;
+                    pw.progressBar.Maximum = progress_max;
                 }
                 catch
                 {
-
+                    pw.progressBar.Maximum = 2147483647;
                 }
                 pw.ProgressName.Text = progressStr;
                 Application.DoEvents();
@@ -101,6 +102,81 @@ namespace YokaiSearcher
             ButtonsEnable(false);
             this.Text = "Yokai Searcher 水咲(みさき)" + Properties.Resources.VersionText;
            
+        }
+        void Sampling()
+        {
+            string chartable = "!-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZcmn";
+            int cacheStart = 0;
+            for (int i = 0; i < 42; i++)
+            {
+
+                for (int j = cacheStart; j < Passwords.Length; j++)
+                {
+
+                    if (j % 1000 == 0)
+                    {
+                        progressStr = $"データのサンプリング中... 1/2\n{i} / 42 \"{chartable[i]}\" [{string.Format("{0:N0}", j)}/{string.Format("{0:N0}", Passwords.Length)}]";
+
+                        progress_max = 42 * Passwords.Length / 1000;
+                        progress_value = i * Passwords.Length / 1000 + j / 1000;
+                    }
+
+                    if (Passwords[j].StartsWith(chartable[i].ToString()))
+                    {
+                        cacheStart = j;
+                        liststart[i] = j;
+                        break;
+                    }
+                    if (j == Passwords.Length - 1)
+                    {
+
+                        liststart[i] = -1;
+                    }
+                }
+            }
+            for(int c1 = 0; c1 < 42; c1++)
+            {
+                cacheStart = liststart[c1];
+                int cacheEnd;
+                if (c1<41)cacheEnd = liststart[c1 + 1];
+                else cacheEnd = Passwords.Length;
+                if (cacheStart == -1)
+                {
+                    for (int c2 = 0; c2 < 42; c2++)
+                    {
+                        listDeepStart[c1 * 42 + c2] = -1;
+                    }
+                }
+                else
+                {
+                    for (int c2 = 0; c2 < 42; c2++)
+                    {
+                        for (int j = cacheStart; j < cacheEnd; j++)
+                        {
+
+                            if (j % 1000 == 0)
+                            {
+                                progressStr = $"データのサンプリング中... 2/2\n{c1*42+c2} / {42*42} \"{chartable[c1]}{chartable[c2]}\" [{string.Format("{0:N0}", j-cacheStart)}/{string.Format("{0:N0}", cacheEnd-cacheStart)}]";
+
+                                progress_value = (c1 * 42 + c2);
+                                progress_max = 42 * 42;
+                            }
+
+                            if (Passwords[j][0]==chartable[c1]&&Passwords[j][1]==chartable[c2])
+                            {
+                                cacheStart = j;
+                                listDeepStart[c1*42+c2] = j;
+                                break;
+                            }
+                            if (j == cacheEnd - 1)
+                            {
+
+                                listDeepStart[c1 * 42 + c2] = -1;
+                            }
+                        }
+                    }
+                }
+            }
         }
         void Reload()
         {
@@ -138,7 +214,38 @@ namespace YokaiSearcher
                 Console.WriteLine(ex.Message);
             }
             Passwords_temp = Passwords;
+            progressStr = $"更新データのソート中...\nこの処理には時間がかかる場合があります。";
+            StringComparer cmp = StringComparer.Ordinal;
+            Array.Sort(Passwords, cmp);
 
+            PasswordList.Clear();
+
+            try
+            {
+                // テキストファイル出力（新規作成）
+                using (StreamWriter sw = new StreamWriter("temp/datatable.bin", false))
+                {
+                    int c = Passwords_temp.Length;
+                    for (int i = 0; i < c; i++)
+                    {
+                        sw.WriteLine(Passwords_temp[i]);
+
+                        if (i % 1000 == 0)
+                        {
+                            progress_max = c;
+                            progress_value = i;
+                            progressStr = $"データの合成中...\n{ string.Format("{0:N0}", i)}/{ string.Format("{0:N0}", c)} ({((double)i / c * 100.0).ToString("F2")}%)";
+                        }
+                    }
+                    sw.Close();
+                }
+                ThreadErrorText = "";
+            }
+            catch
+            {
+
+            }
+            samplingflg = true;
             progressStr = $"メモリの掃除中...";
             GC.Collect();
         }
@@ -152,9 +259,7 @@ namespace YokaiSearcher
             {
                 int count = 0;
                 int maxc = Properties.Resources.DownloadList.Split('\n').Length;
-                for (int i = 0; i < maxc; i++)
-                {
-                    StreamReader sr = new StreamReader($"temp/{i}.bin", Encoding.GetEncoding("Shift_JIS"));
+                    StreamReader sr = new StreamReader($"temp/datatable.bin", Encoding.GetEncoding("Shift_JIS"));
                     while (sr.Peek() != -1)
                     {
                         string str = sr.ReadLine();
@@ -162,19 +267,23 @@ namespace YokaiSearcher
                         {
 
                             count++;
-                            if(count%1000==0)progressStr = $"{i}/{maxc} 取得中 : { string.Format("{0:N0}", count)} 件";
-                            progress_max = maxc;
-                            progress_value = i;
+                            if(count%1000==0)progressStr = $"取得中 : { string.Format("{0:N0}", count)} 件";
+                            progress_max = 100;
+                            progress_value = 0;
                             PasswordList.Add(str);
                         }
                     }
                     sr.Close();
-                }
 
+                samplingflg = true;
                 progress_value = maxc;
                 progressStr = $"データをメモリに格納中...";
                 Passwords = PasswordList.ToArray();
-                PasswordList.Clear();
+
+                progressStr = $"データのソート中...\nこの処理には時間がかかる場合があります。";
+                StringComparer cmp = StringComparer.Ordinal;
+                Array.Sort(Passwords, cmp);
+
             }
             catch (System.IO.DirectoryNotFoundException)
             {
@@ -220,7 +329,7 @@ namespace YokaiSearcher
                 Console.WriteLine(ex.StackTrace);
             }
         }
-
+        bool samplingflg = false;
         void Searching()
         {
             try
@@ -230,9 +339,28 @@ namespace YokaiSearcher
                 ProgressInt = 0;
                 ResultCount = 0;
                 Regex rx = null;
+                int startSearch = 0;
+                int endSearch = -1;
+                if(SearchingMode == "先頭検索")
+                {
+                    if (Passwords.Length == Passwords_temp.Length)
+                    {
+                        string chartable = "!-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZcmn";
+                        for (int i = 0; i < 42; i++)
+                        {
+                            if (SearchWord.StartsWith(chartable[i].ToString()))
+                            {
+                                startSearch = liststart[i];
+                                if (i < 41) endSearch = liststart[i + 1];
+                                break;
+                            }
+                        }
+                    }
+
+                }
                 if (SearchingMode == "正規表現") rx = new Regex(SearchWord, RegexOptions.Compiled);
 
-                for (int i = 0; i < Passwords_temp.Length; i++)
+                for (int i = startSearch; i < Passwords_temp.Length; i++)
                 {
                     if (Passwords_temp[i].Length < 14) continue;
                     switch (SearchingMode)
@@ -283,11 +411,12 @@ namespace YokaiSearcher
                             break;
                     }
                     ProgressInt++;
-
+                    if (endSearch != -1 && endSearch <= i) break;
 
                 }
+                ProgressInt = Passwords_temp.Length;
                 isCompleted = true;
-                if (ResultCount > maxList&&!IsLemitter) throw new IndexOutOfRangeException($"{ string.Format("{0:N0}", maxList)} 個を超えています。一部は省略しました。");
+                if (ResultCount > maxList&&!IsLemitter) throw new IndexOutOfRangeException($"{ string.Format("{0:N0}", maxList)} 件を超えています。一部は省略しました。");
                 ThreadErrorText = "OK";
             }
             catch(Exception ex)
@@ -490,32 +619,50 @@ namespace YokaiSearcher
             }
             if (IsOpenData)
             {
+                ErrorText.Text = "";
                 IsOpenData = false;
-                ButtonsEnable(false);
-                OpenResult.RunWorkerAsync();
-                progress_title = "データの読込中";
-                WaitForComplete();
-                ButtonsEnable(true);
-                if (ThreadErrorText == "")
+                if (IsLoadSearch)
                 {
-                    SearchContinueCheckBox.Checked = true;
-                    IsFirstSearch = false;
-                    SearchLog += $"⇒{OpenedCount.ToString().PadLeft(8, ' ')}件 データ読込\n";
+                    ButtonsEnable(false);
+                    OpenResult.RunWorkerAsync();
+                    progress_title = "データの読込中";
+                    WaitForComplete();
+                    ButtonsEnable(true);
+                    if (ThreadErrorText == "")
+                    {
+                        SearchContinueCheckBox.Checked = true;
+                        IsFirstSearch = false;
+                        SearchLog += $"⇒{OpenedCount.ToString().PadLeft(8, ' ')}件 データ読込\n";
 
-                    SearchLogTextBox.Lines = SearchLog.Split('\n');
-                    MessageBox.Show($"データを一時的に読み込みしました。\n新規検索またはクリアした場合は再度読み込みする必要があります。\n\n有効なデータ数 : { string.Format("{0:N0}", OpenedCount)} 件",
-                        "データ読込完了",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information,
-                        MessageBoxDefaultButton.Button1);
+                        SearchLogTextBox.Lines = SearchLog.Split('\n');
+                        MessageBox.Show($"データを一時的に読み込みしました。\n新規検索またはクリアした場合は再度読み込みする必要があります。\n\n有効なデータ数 : { string.Format("{0:N0}", OpenedCount)} 件",
+                            "データ読込完了",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information,
+                            MessageBoxDefaultButton.Button1);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"データの入力に失敗しました。\n{ThreadErrorText}",
+                            "データの読込失敗",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error,
+                            MessageBoxDefaultButton.Button1);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show($"データの入力に失敗しました。\n{ThreadErrorText}",
-                        "データの読込失敗",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error,
-                        MessageBoxDefaultButton.Button1);
+                    ButtonsEnable(false);
+                    DifListThread.RunWorkerAsync();
+                    progress_title = "データの比較中";
+                    WaitForComplete();
+                    ButtonsEnable(true);
+                    if (Passwords_temp.Length > maxList)
+                    {
+                        ErrorText.Text = $"{ string.Format("{0:N0}", maxList)} 件を超えています。一部は省略しました。";
+                    }
+                    PasswordResultBox.Lines = Passwords_temp2;
+
                 }
             }
             double percent = 0;
@@ -749,10 +896,141 @@ namespace YokaiSearcher
         {
             isCompleted = true;
         }
-
+        bool IsLoadSearch;
         private void LoadSearchIndexButton_Click(object sender, EventArgs e)
         {
+            IsLoadSearch = true;
             openFileDialog.ShowDialog();
+            
+        }
+
+        private void Password_Dif_Click(object sender, EventArgs e)
+        {
+            IsLoadSearch = false;
+            openFileDialog.ShowDialog();
+        }
+
+        private void DifListThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                try
+                {
+                    PasswordList.Clear();
+                    int count = 0;
+                    int maxc = Properties.Resources.DownloadList.Split('\n').Length;
+                    StreamReader sr = new StreamReader(openFileDialog.FileName, Encoding.GetEncoding("Shift_JIS"));
+                    while (sr.Peek() != -1)
+                    {
+                        string str = sr.ReadLine();
+                        if (str.Length == 14)
+                        {
+                            if (!checkTextBox(str)) continue;
+                            count++;
+                            if (count % 1000 == 0) progressStr = $"取得中 : { string.Format("{0:N0}", count)} 件";
+                            progress_max = 100;
+                            progress_value = 0;
+                            PasswordList.Add(str);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return;
+                }
+                Passwords_temp = PasswordList.ToArray();
+                PasswordList.Clear();
+
+                if (samplingflg)
+                {
+                    samplingflg = false;
+                    Sampling();
+                }
+                ResultCount = 0;
+                progress_max = Passwords_temp.Length;
+
+                for (int i = 0; i < Passwords_temp.Length; i++)
+                {
+                    int startSearch = 0;
+                    int endSearch = -1;
+                    string chartable = "!-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZcmn";
+                    for (int j = 0; j < 42; j++)
+                    {
+                        if (Passwords_temp[i][0] == chartable[j])
+                        {
+                            for (int m = 0; m < 42; m++)
+                            {
+                                if (Passwords_temp[i][1] == chartable[m])
+                                {
+                                    startSearch = listDeepStart[j * 42 + m];
+                                    for(int pos=j*42+m+1; pos<42*42; pos++)
+                                    {
+                                        if (listDeepStart[pos] >= 0)
+                                        {
+                                            endSearch = listDeepStart[pos];
+                                            break;
+                                        }
+                                        if(pos==42*42-1) endSearch = Passwords.Length; 
+                                    }
+
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (endSearch == -1)
+                    {
+                        Console.WriteLine($"{i} : 検索値が不正です！");
+                        endSearch = Passwords.Length;
+                    }
+                    progress_value = i;
+                    progressStr = $"比較中... 見つかった数 : {ResultCount}\n{i}/{Passwords_temp.Length}";
+                    
+                    if (startSearch != -1)
+                    {
+                        for (int j = startSearch; j < endSearch; j++)
+                        {
+                            if (Passwords_temp[i] == Passwords[j]) break;
+                            if (j == endSearch - 1)
+                            {
+                                PasswordList.Add(Passwords_temp[i]);
+                                if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
+                                ResultCount++;
+                                Console.WriteLine($"{startSearch}({Passwords[startSearch]})-{endSearch}({Passwords[endSearch]} Result:{Passwords_temp[i]}");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        PasswordList.Add(Passwords_temp[i]);
+                        if (ResultCount < maxList) PasswordList2.Add(Passwords_temp[i]);
+                        ResultCount++;
+                        Console.WriteLine($"{startSearch}-{endSearch} Result:{Passwords_temp[i]}");
+                    }
+
+                    }
+                    GC.Collect();
+                Passwords_temp = PasswordList.ToArray();
+                Passwords_temp2 = PasswordList2.ToArray();
+                StringComparer cmp = StringComparer.Ordinal;
+                progressStr = $"ソート中...";
+                Array.Sort(Passwords_temp2, cmp);
+                Array.Sort(Passwords_temp, cmp);
+                GC.Collect();
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void DifListThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            isCompleted = true;
         }
     }
 }

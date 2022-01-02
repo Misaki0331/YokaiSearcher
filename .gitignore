@@ -54,3 +54,6 @@ dkms.conf
 *.cache
 .vs/WindowsFormsApp1/v16/.suo
 WindowsFormApp1/bin/
+WindowsFormsApp1/bin/x64/Release/temp/datatable.bin
+WindowsFormsApp1/bin/x64/Release/temp/
+WindowsFormsApp1/bin/Release/temp/

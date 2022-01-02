@@ -57,6 +57,8 @@ namespace YokaiSearcher
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.OpenResult = new System.ComponentModel.BackgroundWorker();
             this.LoadSearchIndexButton = new System.Windows.Forms.Button();
+            this.Password_Dif = new System.Windows.Forms.Button();
+            this.DifListThread = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -294,11 +296,27 @@ namespace YokaiSearcher
             this.LoadSearchIndexButton.UseVisualStyleBackColor = true;
             this.LoadSearchIndexButton.Click += new System.EventHandler(this.LoadSearchIndexButton_Click);
             // 
+            // Password_Dif
+            // 
+            this.Password_Dif.Location = new System.Drawing.Point(310, 134);
+            this.Password_Dif.Name = "Password_Dif";
+            this.Password_Dif.Size = new System.Drawing.Size(86, 23);
+            this.Password_Dif.TabIndex = 21;
+            this.Password_Dif.Text = "パスワード比較";
+            this.Password_Dif.UseVisualStyleBackColor = true;
+            this.Password_Dif.Click += new System.EventHandler(this.Password_Dif_Click);
+            // 
+            // DifListThread
+            // 
+            this.DifListThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.DifListThread_DoWork);
+            this.DifListThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.DifListThread_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Password_Dif);
             this.Controls.Add(this.LoadSearchIndexButton);
             this.Controls.Add(this.SaveResultButton);
             this.Controls.Add(this.ListCount);
@@ -357,6 +375,8 @@ namespace YokaiSearcher
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.ComponentModel.BackgroundWorker OpenResult;
         private System.Windows.Forms.Button LoadSearchIndexButton;
+        private System.Windows.Forms.Button Password_Dif;
+        private System.ComponentModel.BackgroundWorker DifListThread;
     }
 }
 
