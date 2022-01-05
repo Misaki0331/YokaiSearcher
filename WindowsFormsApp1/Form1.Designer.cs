@@ -59,6 +59,7 @@ namespace YokaiSearcher
             this.LoadSearchIndexButton = new System.Windows.Forms.Button();
             this.Password_Dif = new System.Windows.Forms.Button();
             this.DifListThread = new System.ComponentModel.BackgroundWorker();
+            this.SamplingThread = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // SearchTextBox
@@ -311,6 +312,10 @@ namespace YokaiSearcher
             this.DifListThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.DifListThread_DoWork);
             this.DifListThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.DifListThread_RunWorkerCompleted);
             // 
+            // SamplingThread
+            // 
+            this.SamplingThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.SamplingThread_DoWork);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -377,6 +382,7 @@ namespace YokaiSearcher
         private System.Windows.Forms.Button LoadSearchIndexButton;
         private System.Windows.Forms.Button Password_Dif;
         private System.ComponentModel.BackgroundWorker DifListThread;
+        private System.ComponentModel.BackgroundWorker SamplingThread;
     }
 }
 

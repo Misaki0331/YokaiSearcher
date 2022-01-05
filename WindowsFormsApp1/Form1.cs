@@ -62,6 +62,7 @@ namespace YokaiSearcher
             SearchNotCheckBox.Enabled = Is;
             TextLimiterCheckBox.Enabled = Is;
             SearchingModeBox.Enabled = Is;
+            Password_Dif.Enabled = Is;
         }
         void WaitForComplete()
         {
@@ -324,10 +325,12 @@ namespace YokaiSearcher
             try
             {
                 Searching();
+
             }
             catch (Exception ex){ Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+
         }
         bool samplingflg = false;
         void Searching()
@@ -348,7 +351,7 @@ namespace YokaiSearcher
                         string chartable = "!-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZcmn";
                         for (int i = 0; i < 42; i++)
                         {
-                            if (SearchWord.StartsWith(chartable[i].ToString()))
+                            if (SearchWord[0]==chartable[i])
                             {
                                 startSearch = liststart[i];
                                 if (i < 41) endSearch = liststart[i + 1];
@@ -358,6 +361,7 @@ namespace YokaiSearcher
                     }
 
                 }
+                Console.WriteLine($"{startSearch} - {endSearch}");
                 if (SearchingMode == "正規表現") rx = new Regex(SearchWord, RegexOptions.Compiled);
 
                 for (int i = startSearch; i < Passwords_temp.Length; i++)
@@ -423,7 +427,9 @@ namespace YokaiSearcher
             {
                 ThreadErrorText = ex.Message;
             }
-            
+            if(SearchingMode!="先頭検索")
+                GC.Collect();
+
         }
         void AddCollection(int i)
         {
@@ -480,6 +486,14 @@ namespace YokaiSearcher
             
             progressBar1.Maximum = Passwords_temp.Length;
             isCompleted = false;
+            if (samplingflg)
+            {
+                samplingflg = false;
+
+                progress_title = "先頭検索の最適化中";
+                SamplingThread.RunWorkerAsync();
+                WaitForComplete();
+            }
             ErrorText.Text = $"";
             ButtonsEnable(false);
             SearchWord = search;
@@ -514,7 +528,6 @@ namespace YokaiSearcher
         }
         private void MTSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            GC.Collect();
             ButtonsEnable(true);
             isCompleted = true;
             
@@ -946,6 +959,9 @@ namespace YokaiSearcher
                 if (samplingflg)
                 {
                     samplingflg = false;
+                    isCompleted = false;
+
+                    progress_title = "データのサンプリング中";
                     Sampling();
                 }
                 ResultCount = 0;
@@ -1030,6 +1046,12 @@ namespace YokaiSearcher
 
         private void DifListThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            isCompleted = true;
+        }
+
+        private void SamplingThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+                Sampling();
             isCompleted = true;
         }
     }
